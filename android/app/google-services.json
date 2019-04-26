@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "263485519482",
+    "firebase_url": "https://test-test-3e373.firebaseio.com",
+    "project_id": "test-test-3e373",
+    "storage_bucket": "test-test-3e373.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:263485519482:android:d01cd324adb96685",
+        "android_client_info": {
+          "package_name": "com.example.restaurant_payments_ui"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "263485519482-beoducdfbuggv0q0pbkmb7atrb6io6eu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCM2EW0icna7SOqhtCTU005t0JXFoVaCCM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "263485519482-beoducdfbuggv0q0pbkmb7atrb6io6eu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "263485519482-q3v307cah11eec7v86q87ek5t06fdj67.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.restaurantPaymentsUi"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
