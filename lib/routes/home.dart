@@ -7,7 +7,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final TextStyle _biggerFont = const TextStyle(fontSize: 18);
+  final TextStyle _biggerFont = const TextStyle(fontSize: 28);
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +21,7 @@ class _HomeState extends State<Home> {
       body: Container(
         child: new Center(
           child: new RaisedButton(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: new Text('Scan QR', style: _biggerFont),
             onPressed: _onScanQRPressed,
           ),
