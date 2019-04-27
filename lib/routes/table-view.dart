@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../routes/home.dart';
 import '../models/table.model.dart';
+import '../models/table-item.model.dart';
+import '../models/table-item-pay.model.dart';
 import '../services/table.service.dart' as TableService;
+import '../services/payment.service.dart' as PaymentService;
 
 class TableView extends StatefulWidget {
   final String tableId;
@@ -32,13 +36,14 @@ class _TableViewState extends State<TableView> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           TableModel table = snapshot.data;
+          Iterable<TableItemModel> notPaidForItems = table.items.where((item) => !item.paidFor);
 
           return Scaffold(
             appBar: AppBar(
               title: Text(table.name),
             ),
             body: ListView(
-              children: table.items.map((item) {
+              children: notPaidForItems.map((item) {
                 bool isItemSelected = selectedItemIds.contains(item.id);
 
                 return [
@@ -88,6 +93,14 @@ class _TableViewState extends State<TableView> {
   }
 
   _onPayPressed() {
-    // TODO
+    selectedItemIds.forEach((String id) {
+      PaymentService.payForItems(new TableItemPayModel(tableItemId: id));
+    });
+
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (context) => Home(),
+      ),
+    );
   }
 }
