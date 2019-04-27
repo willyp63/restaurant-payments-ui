@@ -63,7 +63,7 @@ class _TableViewState extends State<TableView> {
                 ];
               }).expand((i) => i).toList(),
             ),
-            persistentFooterButtons: <Widget>[
+            persistentFooterButtons: selectedItemIds.length > 0 ? <Widget>[
               new Container(
                 height: 40,
                 child: new Center(
@@ -73,14 +73,16 @@ class _TableViewState extends State<TableView> {
                   ),
                 )
               )
-            ],
+            ] : null,
           );
         } else if (snapshot.hasError) {
           throw snapshot.error;
         }
 
         // By default, show a loading spinner
-        return CircularProgressIndicator();
+        return Center(
+          child: CircularProgressIndicator(),
+        );
       },
     );
   }
