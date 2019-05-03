@@ -4,7 +4,7 @@ import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import './table-view.dart';
+import './table-view.widget.dart';
 
 class QRReader extends StatefulWidget {
   @override

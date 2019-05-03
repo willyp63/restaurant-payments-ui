@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'routes/home.dart';
+import 'widgets/signup.widget.dart';
 
 void main() => runApp(MyApp());
 
@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Restaurant Payments',
       theme: ThemeData(),
-      home: Home(),
+      home: SignUp(),
       debugShowCheckedModeBanner: false,
     );
   }

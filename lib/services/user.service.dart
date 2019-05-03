@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/user.model.dart';
 import '../models/table-join.model.dart';
@@ -9,22 +10,51 @@ import '../utils/route.utils.dart';
 import '../services/websocket.service.dart';
 import '../services/table-item.service.dart';
 import '../constants/socket-events.constants.dart';
+import '../constants/local-storage.constants.dart';
 
 class UserService {
+  static UserModel _activeUser;
+  static UserModel getActiveUser() { return _activeUser; }
 
-  static Future<UserModel> addUser(UserModel user) async {
-    final response = await http.post(formatRoute([ApiRoutes.baseUrl, ApiRoutes.users]), body: user);
-    if (response.statusCode != 200) { throw Exception('Failed to add User'); }
+  static Future<bool> loadStoredUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final userId = prefs.getString(LocalStorage.userId);
 
-    return UserModel.fromJson(json.decode(response.body));
+    if (userId == null) { return false; }
+    
+    return _getUserById(userId).then((user) {
+      _activeUser = user;
+      return true;
+    });
   }
 
-  static void addUserToTable(TableJoinModel tableJoin) {
+  static Future signUpUser(UserModel user, String password) async {
+    final userData = user.toJson();
+    userData['password'] = password;
+
+    final response = await http.post(formatRoute([ApiRoutes.baseUrl, ApiRoutes.users]), body: userData);
+    if (response.statusCode != 201) { throw Exception('Failed to add User'); }
+
+    UserModel insertedUser = UserModel.fromJson(json.decode(response.body));
+    _activeUser = insertedUser;
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(LocalStorage.userId, insertedUser.id);
+  }
+
+  static Future signOutUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove(LocalStorage.userId);
+  }
+
+  static void addUserToTable(String tableId) {
+    final tableJoin = new TableJoinModel(tableId: tableId, userId: _activeUser.id);
     WebSocketService.emit(SocketEvents.joinTable, tableJoin);
   }
 
-  static void removeUserFromTable(TableJoinModel tableJoin) {
-    WebSocketService.emit(SocketEvents.leaveTable, tableJoin);
+  static void removeUserFromTable(String tableId) {
+    final tableLeave = new TableJoinModel(tableId: tableId, userId: _activeUser.id);
+    WebSocketService.emit(SocketEvents.leaveTable, tableLeave);
   }
 
   static Observable<void> onUserJoinedTable() {
@@ -33,6 +63,13 @@ class UserService {
 
   static Observable<void> onUserLeftTable() {
     return WebSocketService.listen(SocketEvents.userLeftTable);
+  }
+
+  static Future<UserModel> _getUserById(String userId) async {
+    final response = await http.get(formatRoute([ApiRoutes.baseUrl, ApiRoutes.users, userId]));
+    if (response.statusCode != 200) { throw Exception('Failed to load User'); }
+
+    return UserModel.fromJson(json.decode(response.body));
   }
 
   static Future<List<UserModel>> _getTableUsers(String tableId) async {

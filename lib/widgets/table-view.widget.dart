@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../routes/home.dart';
+import './home.widget.dart';
 import '../models/table.model.dart';
 import '../models/table-item.model.dart';
-import '../models/table-item-pay.model.dart';
 import '../services/table.service.dart';
 import '../services/table-item.service.dart';
 
@@ -24,7 +23,6 @@ class _TableViewState extends State<TableView> {
 
   final Set<String> selectedItemIds = Set<String>();
   final currencyFormatter = NumberFormat.currency(symbol: '\$');
-  final TextStyle _biggerFont = const TextStyle(fontSize: 28);
 
   @override
   void initState() {
@@ -118,7 +116,7 @@ class _TableViewState extends State<TableView> {
 
   _onPayPressed() {
     selectedItemIds.forEach((String id) {
-      TableItemService.payForTableItem(new TableItemPayModel(tableItemId: id, userId: 'TODO'));
+      TableItemService.payForTableItem(id);
     });
 
     Navigator.of(context).push(

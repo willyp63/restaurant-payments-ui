@@ -8,10 +8,12 @@ import '../constants/api-routes.constants.dart';
 import '../constants/socket-events.constants.dart';
 import '../utils/route.utils.dart';
 import '../services/websocket.service.dart';
+import '../services/user.service.dart';
 
 class TableItemService {
 
-  static void payForTableItem(TableItemPayModel itemPay) {
+  static void payForTableItem(String tableItemId) {
+    final itemPay = new TableItemPayModel(tableItemId: tableItemId, userId: UserService.getActiveUser().id);
     WebSocketService.emit(SocketEvents.payForTableItem, itemPay);
   }
 

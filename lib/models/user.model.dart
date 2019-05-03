@@ -1,6 +1,7 @@
 import './table-item.model.dart';
+import './json-convertable.model.dart';
 
-class UserModel {
+class UserModel implements JSONConvertable {
   final String id;
   final String firstName;
   final String lastName;
@@ -10,13 +11,13 @@ class UserModel {
   final List<TableItemModel> paidForItems;
 
   UserModel({
-    this.id,
+    this.id = '',
     this.firstName,
     this.lastName,
-    this.email,
-    this.joinedTableAt,
-    this.leftTableAt,
-    this.paidForItems,
+    this.email = 'a@b.co',
+    this.joinedTableAt = '',
+    this.leftTableAt = '',
+    this.paidForItems = const [],
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -27,7 +28,16 @@ class UserModel {
       email: json['email'],
       joinedTableAt: json['joinedTableAt'],
       leftTableAt: json['leftTableAt'],
-      paidForItems: (json['paidForItems'] as List).map((item) => TableItemModel.fromJson(item)).toList(),
+      paidForItems: json['paidForItems'] != null ? (json['paidForItems'] as List).map((item) => TableItemModel.fromJson(item)).toList() : [],
     );
+  }
+
+  Map toJson() {
+    return {
+      'id': id,
+      'firstName': firstName,
+      'lastName': lastName,
+      'email': email,
+    };
   }
 }
