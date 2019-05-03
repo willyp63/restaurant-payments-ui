@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../routes/home.dart';
 import '../models/table.model.dart';
 import '../models/table-item.model.dart';
 import '../models/table-item-pay.model.dart';
-import '../services/table.service.dart' as TableService;
-import '../services/payment.service.dart' as PaymentService;
+import '../services/table.service.dart';
+import '../services/table-item.service.dart';
 
 class TableView extends StatefulWidget {
   final String tableId;
@@ -19,6 +20,8 @@ class TableView extends StatefulWidget {
 
 class _TableViewState extends State<TableView> {
   Future<TableModel> table;
+  Observable<List<TableItemModel>> tableItems;
+
   final Set<String> selectedItemIds = Set<String>();
   final currencyFormatter = NumberFormat.currency(symbol: '\$');
   final TextStyle _biggerFont = const TextStyle(fontSize: 28);
@@ -26,7 +29,9 @@ class _TableViewState extends State<TableView> {
   @override
   void initState() {
     super.initState();
-    table = TableService.fetchTableById(widget.tableId);
+
+    table = TableService.getTableById(widget.tableId);
+    tableItems = TableItemService.getTableItems(widget.tableId);
   }
 
   @override
@@ -36,38 +41,12 @@ class _TableViewState extends State<TableView> {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           TableModel table = snapshot.data;
-          Iterable<TableItemModel> notPaidForItems = table.items.where((item) => !item.paidFor);
 
           return Scaffold(
             appBar: AppBar(
               title: Text(table.name),
             ),
-            body: ListView(
-              children: notPaidForItems.map((item) {
-                bool isItemSelected = selectedItemIds.contains(item.id);
-
-                return [
-                  ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-                    title: Text(item.name),
-                    subtitle: Text(currencyFormatter.format(item.price)),
-                    trailing: Icon(
-                      isItemSelected ? Icons.radio_button_checked : Icons.radio_button_unchecked,
-                    ),
-                    onTap: () {
-                      setState(() {
-                        if (isItemSelected) {
-                          selectedItemIds.remove(item.id);
-                        } else {
-                          selectedItemIds.add(item.id);
-                        }
-                      });
-                    },
-                  ),
-                  Divider(),
-                ];
-              }).expand((i) => i).toList(),
-            ),
+            body: _buildTableItemList(),
             persistentFooterButtons: selectedItemIds.length > 0 ? <Widget>[
               new Container(
                 height: 40,
@@ -92,9 +71,54 @@ class _TableViewState extends State<TableView> {
     );
   }
 
+  Widget _buildTableItemList() {
+    return StreamBuilder(
+      stream: tableItems,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          List<TableItemModel> tableItems = snapshot.data;
+
+          return ListView(
+            children: tableItems.map((item) {
+              bool isItemSelected = selectedItemIds.contains(item.id);
+
+              return [
+                ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                  title: Text(item.name),
+                  subtitle: Text(currencyFormatter.format(item.price)),
+                  trailing: Icon(
+                    isItemSelected ? Icons.radio_button_checked : Icons.radio_button_unchecked,
+                  ),
+                  onTap: () {
+                    setState(() {
+                      if (isItemSelected) {
+                        selectedItemIds.remove(item.id);
+                      } else {
+                        selectedItemIds.add(item.id);
+                      }
+                    });
+                  },
+                ),
+                Divider(),
+              ];
+            }).expand((i) => i).toList(),
+          );
+        } else if (snapshot.hasError) {
+          throw snapshot.error;
+        }
+
+        // By default, show a loading spinner
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
+
   _onPayPressed() {
     selectedItemIds.forEach((String id) {
-      PaymentService.payForItems(new TableItemPayModel(tableItemId: id));
+      TableItemService.payForTableItem(new TableItemPayModel(tableItemId: id, userId: 'TODO'));
     });
 
     Navigator.of(context).push(
