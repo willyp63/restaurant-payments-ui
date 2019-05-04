@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:rxdart/rxdart.dart';
 
 import './home.widget.dart';
+import './table-events-view.widget.dart';
+import './table-users-view.widget.dart';
+import '../utils/table-item.utils.dart';
 import '../models/table.model.dart';
 import '../models/table-item.model.dart';
 import '../services/table.service.dart';
@@ -22,7 +24,6 @@ class _TableViewState extends State<TableView> {
   Observable<List<TableItemModel>> tableItems;
 
   final Set<String> selectedItemIds = Set<String>();
-  final currencyFormatter = NumberFormat.currency(symbol: '\$');
 
   @override
   void initState() {
@@ -46,11 +47,11 @@ class _TableViewState extends State<TableView> {
               actions: <Widget>[
                 IconButton(
                   icon: Icon(Icons.people),
-                  onPressed: _goToPeopleView,
+                  onPressed: _goToTableUsersView,
                 ),
                 IconButton(
                   icon: Icon(Icons.list),
-                  onPressed: _goToNotificationsView,
+                  onPressed: _goToTableEventsView,
                 ),
               ],
             ),
@@ -93,8 +94,8 @@ class _TableViewState extends State<TableView> {
               return [
                 ListTile(
                   contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-                  title: Text(item.name),
-                  subtitle: Text(currencyFormatter.format(item.price)),
+                  title: Text(formatTableItemName(item)),
+                  subtitle: Text(formatTableItemPrice(item)),
                   trailing: Icon(
                     isItemSelected ? Icons.radio_button_checked : Icons.radio_button_unchecked,
                   ),
@@ -136,11 +137,19 @@ class _TableViewState extends State<TableView> {
     );
   }
 
-  _goToPeopleView() {
-
+  _goToTableUsersView() {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (context) => TableUsersView(widget.tableId),
+      ),
+    );
   }
 
-  _goToNotificationsView() {
-
+  _goToTableEventsView() {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (context) => TableEventsView(widget.tableId),
+      ),
+    );
   }
 }

@@ -12,14 +12,17 @@ class WebSocketService {
   static final jsonEncoder = JsonEncoder();
   static final dataMatchExp = new RegExp(r",(.*)]");
 
+  static bool islistening = false;
+
   static void emit(String eventName, JSONConvertable data) {
-    String dataStr = jsonEncoder.convert(data.toJson());
-    channel.sink.add('42["$eventName",$dataStr]');
+    String eventStr = jsonEncoder.convert({'event': eventName, 'data': data.toJson()});
+    channel.sink.add(eventStr);
   }
 
   static Observable listen(String eventName) {
-    return events.where((dataStr) => dataStr.startsWith('42["$eventName",'))
-      .map((dataStr) => json.decode(dataMatchExp.firstMatch(dataStr).group(1)));
+    return events
+      .map((eventStr) => jsonDecode(eventStr))
+      .where((event) => event['event'] == eventName);
   }
   
 }
