@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import './table-view.widget.dart';
+import '../services/user.service.dart';
 
 class QRReader extends StatefulWidget {
   @override
@@ -41,6 +42,8 @@ class _QRReaderState extends State<QRReader> {
   }
 
   void _goToTableView(String tableId) {
+    UserService.addUserToTable(tableId);
+
     Navigator.of(context).pushReplacement(
       MaterialPageRoute<void>(
         builder: (context) => TableView(tableId),

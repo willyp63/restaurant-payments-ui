@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import './qr-reader.widget.dart';
+import './past-tables.widget.dart';
 import '../services/user.service.dart';
 import '../utils/name.utils.dart';
 import './signup.widget.dart';
@@ -75,7 +76,11 @@ class _HomeState extends State<Home> {
   }
 
   void _onPastTablesPressed() {
-    // TODO
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (context) => PastTables(),
+      ),
+    );
   }
 
   void _signOutUser() {

@@ -13,6 +13,8 @@ import '../services/user.service.dart';
 class TableItemService {
 
   static void payForTableItem(String tableItemId) {
+    if (UserService.getActiveUser() == null) { throw Exception('No active User'); }
+
     final itemPay = new TableItemPayModel(tableItemId: tableItemId, userId: UserService.getActiveUser().id);
     WebSocketService.emit(SocketEvents.payForTableItem, itemPay);
   }

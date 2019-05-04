@@ -4,6 +4,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/user.model.dart';
+import '../models/table.model.dart';
 import '../models/table-join.model.dart';
 import '../constants/api-routes.constants.dart';
 import '../utils/route.utils.dart';
@@ -48,13 +49,26 @@ class UserService {
   }
 
   static void addUserToTable(String tableId) {
+    if (_activeUser == null) { throw Exception('No active User'); }
+
     final tableJoin = new TableJoinModel(tableId: tableId, userId: _activeUser.id);
     WebSocketService.emit(SocketEvents.joinTable, tableJoin);
   }
 
   static void removeUserFromTable(String tableId) {
+    if (_activeUser == null) { throw Exception('No active User'); }
+
     final tableLeave = new TableJoinModel(tableId: tableId, userId: _activeUser.id);
     WebSocketService.emit(SocketEvents.leaveTable, tableLeave);
+  }
+
+  static Future<List<TableModel>> getPastTables() async {
+    if (_activeUser == null) { throw Exception('No active User'); }
+    
+    final response = await http.get(formatRoute([ApiRoutes.baseUrl, ApiRoutes.users, _activeUser.id, ApiRoutes.tables]));
+    if (response.statusCode != 200) { throw Exception('Failed to get User\'s Tables'); }
+
+    return (json.decode(response.body) as List).map((tableData) => TableModel.fromJson(tableData)).toList();
   }
 
   static Observable<void> onUserJoinedTable() {

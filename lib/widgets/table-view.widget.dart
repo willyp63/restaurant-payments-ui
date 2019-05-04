@@ -43,6 +43,16 @@ class _TableViewState extends State<TableView> {
           return Scaffold(
             appBar: AppBar(
               title: Text(table.name),
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.people),
+                  onPressed: _goToPeopleView,
+                ),
+                IconButton(
+                  icon: Icon(Icons.list),
+                  onPressed: _goToNotificationsView,
+                ),
+              ],
             ),
             body: _buildTableItemList(),
             persistentFooterButtons: selectedItemIds.length > 0 ? <Widget>[
@@ -124,5 +134,13 @@ class _TableViewState extends State<TableView> {
         builder: (context) => Home(),
       ),
     );
+  }
+
+  _goToPeopleView() {
+
+  }
+
+  _goToNotificationsView() {
+
   }
 }
