@@ -24,6 +24,8 @@ class UserService {
     if (userId == null) { return false; }
     
     return _getUserById(userId).then((user) {
+      if (user == null) { return false; }
+
       _activeUser = user;
       return true;
     });
@@ -81,6 +83,10 @@ class UserService {
 
   static Future<UserModel> _getUserById(String userId) async {
     final response = await http.get(formatRoute([ApiRoutes.baseUrl, ApiRoutes.users, userId]));
+
+    // user not found
+    if(response.statusCode == 400) { return null; }
+
     if (response.statusCode != 200) { throw Exception('Failed to load User'); }
 
     return UserModel.fromJson(json.decode(response.body));
