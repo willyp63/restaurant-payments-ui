@@ -8,7 +8,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Restaurant Payments',
-      theme: ThemeData(),
+      theme: ThemeData(
+        primaryColor: Colors.blue,
+        accentColor: Colors.blue,
+      ),
       home: SignUp(),
       debugShowCheckedModeBanner: false,
     );

@@ -30,6 +30,7 @@ class _TableViewState extends State<TableView> {
 
   final TextStyle _boldFont =
       const TextStyle(fontSize: 12, fontWeight: FontWeight.bold);
+  final TextStyle _bigFont = const TextStyle(fontSize: 20);
 
   @override
   void initState() {
@@ -72,18 +73,60 @@ class _TableViewState extends State<TableView> {
                 ),
               ],
             ),
-            body: _buildBothTableItemLists(),
-            persistentFooterButtons: selectedItemIds.length > 0
-                ? <Widget>[
-                    new Container(
-                        height: 40,
-                        child: new Center(
-                          child: new FlatButton(
-                              child: new Text('Pay for Items'),
-                              onPressed: _onPayPressed),
-                        ))
-                  ]
-                : null,
+            body: Stack(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.only(
+                      bottom: selectedItemIds.length > 0 ? 158 : 0),
+                  child: _buildBothTableItemLists(),
+                ),
+                selectedItemIds.length > 0
+                    ? Positioned(
+                        // red box
+                        child: Container(
+                          height: 158,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              Container(
+                                padding: EdgeInsets.only(left: 16, bottom: 16),
+                                child: Text('Total: 12.50', style: _bigFont),
+                              ),
+                              Container(
+                                padding: EdgeInsets.only(left: 16, bottom: 16),
+                                child: Text('Tip: 12.50', style: _bigFont),
+                              ),
+                              RaisedButton(
+                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                child: new Text('Pay for Items', style: _bigFont),
+                                onPressed: _onPayPressed,
+                              ),
+                            ],
+                          ),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).accentColor,
+                            boxShadow: <BoxShadow>[
+                              BoxShadow (
+                                color: const Color(0xcc000000),
+                                offset: Offset(0.0, 2.0),
+                                blurRadius: 4.0,
+                              ),
+                              BoxShadow (
+                                color: const Color(0x80000000),
+                                offset: Offset(0.0, 6.0),
+                                blurRadius: 20.0,
+                              ),
+                            ], 
+                          ),
+                          padding: EdgeInsets.all(16.0),
+                        ),
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                      )
+                    : Container(),
+              ],
+            ),
           );
         } else if (snapshot.hasError) {
           throw snapshot.error;
