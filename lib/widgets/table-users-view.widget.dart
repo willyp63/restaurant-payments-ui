@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
 import '../models/user.model.dart';
 import '../services/user.service.dart';
+import '../services/websocket.service.dart';
 import '../utils/name.utils.dart';
 import '../utils/table-item.utils.dart';
 
@@ -10,7 +12,7 @@ class ExpandableUserModel {
   UserModel user;
   bool isExpanded;
 
-  ExpandableUserModel({ this.user, this.isExpanded: true });
+  ExpandableUserModel({ this.user, this.isExpanded: false });
 }
 
 class TableUsersView extends StatefulWidget {
@@ -24,6 +26,7 @@ class TableUsersView extends StatefulWidget {
 
 class _TableUsersViewState extends State<TableUsersView> {
   Observable<List<ExpandableUserModel>> _users;
+  StreamSubscription _usersSubscription;
 
   final TextStyle _boldFont = const TextStyle(fontSize: 12, fontWeight: FontWeight.bold);
 
@@ -31,9 +34,19 @@ class _TableUsersViewState extends State<TableUsersView> {
   void initState() {
     super.initState();
 
-    _users = UserService.getTableUsers(widget.tableId).map((users) {
-      return users.map((user) => new ExpandableUserModel(user: user)).toList();
+    _usersSubscription = WebSocketService.onReconnect(() {
+      setState(() {
+        _users = UserService.getTableUsers(widget.tableId).map((users) {
+          return users.map((user) => new ExpandableUserModel(user: user)).toList();
+        });
+      });
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _usersSubscription.cancel();
   }
 
   @override
@@ -65,7 +78,7 @@ class _TableUsersViewState extends State<TableUsersView> {
                           children: <Widget>[
                             Container(
                               padding: EdgeInsets.only(left: 24),
-                              child: Text(formatName(user.user)),
+                              child: Text(formatName(user.user) + ' (' + user.user.paidForItems.length.toString() + ')'),
                             ),
                           ],
                         );

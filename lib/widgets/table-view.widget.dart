@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -9,6 +10,7 @@ import '../models/table.model.dart';
 import '../models/table-item.model.dart';
 import '../services/table.service.dart';
 import '../services/table-item.service.dart';
+import '../services/websocket.service.dart';
 
 class TableView extends StatefulWidget {
   final String tableId;
@@ -21,7 +23,8 @@ class TableView extends StatefulWidget {
 
 class _TableViewState extends State<TableView> {
   Future<TableModel> table;
-  Observable<List<TableItemModel>> tableItems;
+  Observable<List<TableItemModel>> _tableItems;
+  StreamSubscription _tableItemsSubscription;
 
   final Set<String> selectedItemIds = Set<String>();
 
@@ -30,7 +33,18 @@ class _TableViewState extends State<TableView> {
     super.initState();
 
     table = TableService.getTableById(widget.tableId);
-    tableItems = TableItemService.getTableItems(widget.tableId);
+
+    _tableItemsSubscription = WebSocketService.onReconnect(() {
+      setState(() {
+        _tableItems = TableItemService.getTableItems(widget.tableId);
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _tableItemsSubscription.cancel();
   }
 
   @override
@@ -82,7 +96,7 @@ class _TableViewState extends State<TableView> {
 
   Widget _buildTableItemList() {
     return StreamBuilder(
-      stream: tableItems,
+      stream: _tableItems,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<TableItemModel> tableItems = snapshot.data;
