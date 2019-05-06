@@ -85,14 +85,15 @@ class _TableUsersViewState extends State<TableUsersView> {
                       },
                       isExpanded: user.isExpanded,
                       body: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
-                          Divider(),
                           Container(
-                            padding: EdgeInsets.only(left: 24),
+                            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                             child: Text(user.user.paidForItems.length != 0 ? 'Paid for Items:' : 'No items paid for...', style: _boldFont),
+                            decoration: new BoxDecoration(
+                              color: Colors.grey[300],
+                            ),
                           ),
-                          Divider(),
                           Column(
                             children: user.user.paidForItems.map((item) {
                               return Column(

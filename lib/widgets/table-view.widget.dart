@@ -28,6 +28,9 @@ class _TableViewState extends State<TableView> {
 
   final Set<String> selectedItemIds = Set<String>();
 
+  final TextStyle _boldFont =
+      const TextStyle(fontSize: 12, fontWeight: FontWeight.bold);
+
   @override
   void initState() {
     super.initState();
@@ -69,18 +72,18 @@ class _TableViewState extends State<TableView> {
                 ),
               ],
             ),
-            body: _buildTableItemList(),
-            persistentFooterButtons: selectedItemIds.length > 0 ? <Widget>[
-              new Container(
-                height: 40,
-                child: new Center(
-                  child: new FlatButton(
-                    child: new Text('Pay for Items'),
-                    onPressed: _onPayPressed
-                  ),
-                )
-              )
-            ] : null,
+            body: _buildBothTableItemLists(),
+            persistentFooterButtons: selectedItemIds.length > 0
+                ? <Widget>[
+                    new Container(
+                        height: 40,
+                        child: new Center(
+                          child: new FlatButton(
+                              child: new Text('Pay for Items'),
+                              onPressed: _onPayPressed),
+                        ))
+                  ]
+                : null,
           );
         } else if (snapshot.hasError) {
           throw snapshot.error;
@@ -94,38 +97,40 @@ class _TableViewState extends State<TableView> {
     );
   }
 
-  Widget _buildTableItemList() {
+  Widget _buildBothTableItemLists() {
     return StreamBuilder(
       stream: _tableItems,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           List<TableItemModel> tableItems = snapshot.data;
+          List<TableItemModel> paidForTableItems =
+              tableItems.where((item) => item.paidForAt != null).toList();
+          List<TableItemModel> unpaidTableItems =
+              tableItems.where((item) => item.paidForAt == null).toList();
 
           return ListView(
-            children: tableItems.map((item) {
-              bool isItemSelected = selectedItemIds.contains(item.id);
-
-              return [
-                ListTile(
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-                  title: Text(formatTableItemName(item)),
-                  subtitle: Text(formatTableItemPrice(item)),
-                  trailing: Icon(
-                    isItemSelected ? Icons.radio_button_checked : Icons.radio_button_unchecked,
+            children: [
+              [
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Text('Unpaid:', style: _boldFont),
+                  decoration: new BoxDecoration(
+                    color: Colors.grey[300],
                   ),
-                  onTap: () {
-                    setState(() {
-                      if (isItemSelected) {
-                        selectedItemIds.remove(item.id);
-                      } else {
-                        selectedItemIds.add(item.id);
-                      }
-                    });
-                  },
                 ),
-                Divider(),
-              ];
-            }).expand((i) => i).toList(),
+              ],
+              _buildTableItems(unpaidTableItems, true),
+              [
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Text('Paid for:', style: _boldFont),
+                  decoration: new BoxDecoration(
+                    color: Colors.grey[300],
+                  ),
+                ),
+              ],
+              _buildTableItems(paidForTableItems, false),
+            ].expand((x) => x).toList(),
           );
         } else if (snapshot.hasError) {
           throw snapshot.error;
@@ -137,6 +142,45 @@ class _TableViewState extends State<TableView> {
         );
       },
     );
+  }
+
+  List<Widget> _buildTableItems(
+      List<TableItemModel> tableItems, bool isSelectable) {
+    return tableItems
+        .map((item) {
+          bool isItemSelected = selectedItemIds.contains(item.id);
+
+          return [
+            ListTile(
+              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+              title: Text(formatTableItemName(item)),
+              subtitle: Text(formatTableItemPrice(item)),
+              trailing: isSelectable
+                  ? Icon(
+                      isItemSelected
+                          ? Icons.radio_button_checked
+                          : Icons.radio_button_unchecked,
+                    )
+                  : null,
+              onTap: () {
+                if (!isSelectable) {
+                  return;
+                }
+
+                setState(() {
+                  if (isItemSelected) {
+                    selectedItemIds.remove(item.id);
+                  } else {
+                    selectedItemIds.add(item.id);
+                  }
+                });
+              },
+            ),
+            Divider(),
+          ];
+        })
+        .expand((x) => x)
+        .toList();
   }
 
   _onPayPressed() {
