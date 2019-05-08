@@ -6,11 +6,13 @@ import './home.widget.dart';
 import './table-events-view.widget.dart';
 import './table-users-view.widget.dart';
 import '../utils/table-item.utils.dart';
+import '../utils/name.utils.dart';
 import '../models/table.model.dart';
 import '../models/table-item.model.dart';
 import '../services/table.service.dart';
 import '../services/table-item.service.dart';
 import '../services/websocket.service.dart';
+import '../services/user.service.dart';
 
 class TableView extends StatefulWidget {
   final String tableId;
@@ -24,13 +26,19 @@ class TableView extends StatefulWidget {
 class _TableViewState extends State<TableView> {
   Future<TableModel> table;
   Observable<List<TableItemModel>> _tableItems;
-  StreamSubscription _tableItemsSubscription;
+  StreamSubscription _websocketSubscription;
+  StreamSubscription _itemPaySubscription;
 
-  final Set<String> selectedItemIds = Set<String>();
+  bool _isLoading = false;
+
+  final Set<TableItemModel> _selectedItems = Set<TableItemModel>();
+  final Set<String> _selectedItemIds = Set<String>();
+  num _tipPercent = .2;
 
   final TextStyle _boldFont =
       const TextStyle(fontSize: 12, fontWeight: FontWeight.bold);
   final TextStyle _bigFont = const TextStyle(fontSize: 20);
+  final TextStyle _greyFont = const TextStyle(color: Colors.grey);
 
   @override
   void initState() {
@@ -38,7 +46,7 @@ class _TableViewState extends State<TableView> {
 
     table = TableService.getTableById(widget.tableId);
 
-    _tableItemsSubscription = WebSocketService.onReconnect(() {
+    _websocketSubscription = WebSocketService.onReconnect(() {
       setState(() {
         _tableItems = TableItemService.getTableItems(widget.tableId);
       });
@@ -48,16 +56,33 @@ class _TableViewState extends State<TableView> {
   @override
   void dispose() {
     super.dispose();
-    _tableItemsSubscription.cancel();
+    if (_websocketSubscription != null) { _websocketSubscription.cancel(); }
+    if (_itemPaySubscription != null) { _itemPaySubscription.cancel(); }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return Center(
+          child: CircularProgressIndicator(),
+        );
+    }
+
     return FutureBuilder(
       future: table,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           TableModel table = snapshot.data;
+          num selectedItemsSubtotal = _selectedItems.length != 0
+              ? _selectedItems
+                  .map((item) => item.price)
+                  .reduce((sum, itemPrice) => sum + itemPrice)
+              : 0;
+          num selectedItemsTax = selectedItemsSubtotal * 0.07;
+          num selectedItemsTotal = selectedItemsSubtotal + selectedItemsTax;
+
+          num tipAmount = _tipPercent * selectedItemsTotal;
+          num finalTotal = selectedItemsTotal + tipAmount;
 
           return Scaffold(
             appBar: AppBar(
@@ -77,46 +102,82 @@ class _TableViewState extends State<TableView> {
               children: <Widget>[
                 Container(
                   padding: EdgeInsets.only(
-                      bottom: selectedItemIds.length > 0 ? 158 : 0),
+                      bottom: _selectedItems.length > 0 ? 214 : 0),
                   child: _buildBothTableItemLists(),
                 ),
-                selectedItemIds.length > 0
+                _selectedItems.length > 0
                     ? Positioned(
                         // red box
                         child: Container(
-                          height: 158,
+                          height: 214,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: <Widget>[
+                              _buildFooterRow(
+                                  'Your Items:', selectedItemsTotal),
                               Container(
-                                padding: EdgeInsets.only(left: 16, bottom: 16),
-                                child: Text('Total: 12.50', style: _bigFont),
+                                padding: EdgeInsets.symmetric(vertical: 8),
+                                child: Flex(
+                                  direction: Axis.horizontal,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Flex(
+                                      direction: Axis.horizontal,
+                                      children: <Widget>[
+                                        Text('Tip:', style: _bigFont),
+                                        Slider(
+                                          activeColor:
+                                              Theme.of(context).primaryColor,
+                                          min: .1,
+                                          max: .3,
+                                          onChanged: (newTipPercent) {
+                                            setState(() =>
+                                                _tipPercent = newTipPercent);
+                                          },
+                                          value: _tipPercent,
+                                        ),
+                                        Text(
+                                            '(' +
+                                                percentFormatter
+                                                    .format(_tipPercent) +
+                                                ')',
+                                            style: _bigFont),
+                                      ],
+                                    ),
+                                    Text(currencyFormatter.format(tipAmount),
+                                        style: _bigFont),
+                                  ],
+                                ),
                               ),
+                              _buildFooterRow('Your Total:', finalTotal),
                               Container(
-                                padding: EdgeInsets.only(left: 16, bottom: 16),
-                                child: Text('Tip: 12.50', style: _bigFont),
-                              ),
-                              RaisedButton(
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                                child: new Text('Pay for Items', style: _bigFont),
-                                onPressed: _onPayPressed,
-                              ),
+                                padding: EdgeInsets.only(top: 8),
+                                child: RaisedButton(
+                                  color: Theme.of(context).primaryColor,
+                                  textColor: Colors.white,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 8),
+                                  child: Text('Pay for Items', style: _bigFont),
+                                  onPressed: _onPayPressed,
+                                ),
+                              )
                             ],
                           ),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).accentColor,
+                            color: Colors.white,
                             boxShadow: <BoxShadow>[
-                              BoxShadow (
+                              BoxShadow(
                                 color: const Color(0xcc000000),
                                 offset: Offset(0.0, 2.0),
                                 blurRadius: 4.0,
                               ),
-                              BoxShadow (
+                              BoxShadow(
                                 color: const Color(0x80000000),
                                 offset: Offset(0.0, 6.0),
                                 blurRadius: 20.0,
                               ),
-                            ], 
+                            ],
                           ),
                           padding: EdgeInsets.all(16.0),
                         ),
@@ -137,6 +198,20 @@ class _TableViewState extends State<TableView> {
           child: CircularProgressIndicator(),
         );
       },
+    );
+  }
+
+  Widget _buildFooterRow(String label, num amount) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 8),
+      child: Flex(
+        direction: Axis.horizontal,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(label, style: _bigFont),
+          Text(currencyFormatter.format(amount), style: _bigFont),
+        ],
+      ),
     );
   }
 
@@ -191,7 +266,7 @@ class _TableViewState extends State<TableView> {
       List<TableItemModel> tableItems, bool isSelectable) {
     return tableItems
         .map((item) {
-          bool isItemSelected = selectedItemIds.contains(item.id);
+          bool isItemSelected = _selectedItemIds.contains(item.id);
 
           return [
             ListTile(
@@ -203,8 +278,9 @@ class _TableViewState extends State<TableView> {
                       isItemSelected
                           ? Icons.radio_button_checked
                           : Icons.radio_button_unchecked,
+                      color: isItemSelected ? Theme.of(context).primaryColor : Colors.grey,
                     )
-                  : null,
+                  : Text('Paid for by: ' + formatName(item.paidForBy, UserService.getActiveUser()), style: _greyFont),
               onTap: () {
                 if (!isSelectable) {
                   return;
@@ -212,9 +288,11 @@ class _TableViewState extends State<TableView> {
 
                 setState(() {
                   if (isItemSelected) {
-                    selectedItemIds.remove(item.id);
+                    _selectedItems.removeWhere((selectedItem) => selectedItem.id == item.id);
+                    _selectedItemIds.remove(item.id);
                   } else {
-                    selectedItemIds.add(item.id);
+                    _selectedItems.add(item);
+                    _selectedItemIds.add(item.id);
                   }
                 });
               },
@@ -227,15 +305,24 @@ class _TableViewState extends State<TableView> {
   }
 
   _onPayPressed() {
-    selectedItemIds.forEach((String id) {
-      TableItemService.payForTableItem(id);
+    setState(() {
+      _isLoading = true;
+    });
+    
+    _selectedItems.forEach((TableItemModel item) {
+      TableItemService.payForTableItem(item.id);
     });
 
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (context) => Home(),
-      ),
-    );
+    _itemPaySubscription = TableItemService.onTableItemPaidFor().listen((_) {
+      _itemPaySubscription.cancel();
+
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute<void>(
+          builder: (context) => Home(),
+        ),
+        (_) => false,
+      );
+    });
   }
 
   _goToTableUsersView() {

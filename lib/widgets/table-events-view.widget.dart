@@ -9,6 +9,7 @@ import '../services/user.service.dart';
 import '../services/websocket.service.dart';
 import '../services/table-item.service.dart';
 import '../utils/table-event.utils.dart';
+import '../utils/table-item.utils.dart';
 
 class TableEventsView extends StatefulWidget {
   final String tableId;
@@ -52,16 +53,16 @@ class _TableEventsViewState extends State<TableEventsView> {
                 );
               }).toList();
 
-            List<UserLeaveEventModel> userLeaveEvents = users
-              .where((user) => user.leftTableAt != null)
-              .map((user) {
-                return new UserLeaveEventModel(
-                  date: user.leftTableAt,
-                  user: user,
-                );
-              }).toList();
+            // List<UserLeaveEventModel> userLeaveEvents = users
+            //   .where((user) => user.leftTableAt != null)
+            //   .map((user) {
+            //     return new UserLeaveEventModel(
+            //       date: user.leftTableAt,
+            //       user: user,
+            //     );
+            //   }).toList();
 
-            List<TableEventModel> events = [itemPayEvents, userJoinEvents, userLeaveEvents].expand((x) => x).toList();
+            List<TableEventModel> events = [itemPayEvents, userJoinEvents].expand((x) => x).toList();
             events.sort((a, b) => a.date.compareTo(b.date));
             return events;
           },
@@ -95,7 +96,8 @@ class _TableEventsViewState extends State<TableEventsView> {
                       ListTile(
                         contentPadding:
                             EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-                        title: Text(formatTableEvent(event)),
+                        title: Text(formatTableEvent(event, UserService.getActiveUser())),
+                        subtitle: Text(dateFormatter.format(DateTime.parse(event.date).toLocal())),
                       ),
                       Divider(),
                     ];

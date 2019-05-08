@@ -9,8 +9,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Restaurant Payments',
       theme: ThemeData(
-        primaryColor: Colors.blue,
-        accentColor: Colors.blue,
+        primaryColor: Colors.blue[700],
+        accentColor: Colors.blue[700],
       ),
       home: SignUp(),
       debugShowCheckedModeBanner: false,

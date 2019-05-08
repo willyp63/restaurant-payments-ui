@@ -78,7 +78,7 @@ class _TableUsersViewState extends State<TableUsersView> {
                           children: <Widget>[
                             Container(
                               padding: EdgeInsets.only(left: 24),
-                              child: Text(formatName(user.user) + ' (' + user.user.paidForItems.length.toString() + ')'),
+                              child: Text(formatName(user.user, UserService.getActiveUser()) + ' (' + user.user.paidForItems.length.toString() + ')'),
                             ),
                           ],
                         );

@@ -24,11 +24,22 @@ class _HomeState extends State<Home> {
       drawer: Drawer(
         child: ListView(
           children: <Widget>[
-            ListTile(
-              title: Text(formatName(user), style: _biggerFont),
-              leading: Icon(Icons.person),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+              ),
+              child: Flex(
+                direction: Axis.horizontal,
+                children: <Widget>[
+                  Container(
+                    child: Icon(Icons.person),
+                    padding: EdgeInsets.only(right: 16),
+                  ),
+                  Text(formatName(user), style: _biggerFont),
+                ],
+              ),
             ),
-            Divider(),
             ListTile(
               title: Text('Sign Out', style: _bigFont),
               trailing: Icon(Icons.arrow_forward),
@@ -44,18 +55,20 @@ class _HomeState extends State<Home> {
             child: Column(
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.only(bottom: 24),
+                  padding: EdgeInsets.only(bottom: 16),
                   child: RaisedButton(
+                    color: Theme.of(context).primaryColor,
+                    textColor: Colors.white,
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: new Text('Join Table', style: _biggerFont),
                     onPressed: _onScanQRPressed,
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(bottom: 24),
-                  child: RaisedButton(
+                  child: FlatButton(
+                    textColor: Theme.of(context).primaryColor,
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: new Text('Past Tables', style: _biggerFont),
+                    child: new Text('Past Tables', style: _bigFont),
                     onPressed: _onPastTablesPressed,
                   ),
                 ),
@@ -85,10 +98,11 @@ class _HomeState extends State<Home> {
 
   void _signOutUser() {
     UserService.signOutUser().then((_) {
-      Navigator.of(context).pushReplacement(
+      Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute<void>(
           builder: (context) => SignUp(),
         ),
+        (_) => false,
       );
     }); 
   }
