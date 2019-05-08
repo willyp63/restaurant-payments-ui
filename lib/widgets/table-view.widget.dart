@@ -27,6 +27,7 @@ class _TableViewState extends State<TableView> {
   Future<TableModel> table;
   Observable<List<TableItemModel>> _tableItems;
   StreamSubscription _websocketSubscription;
+  StreamSubscription _tableItemsSubscription;
   StreamSubscription _itemPaySubscription;
 
   bool _isLoading = false;
@@ -49,6 +50,29 @@ class _TableViewState extends State<TableView> {
     _websocketSubscription = WebSocketService.onReconnect(() {
       setState(() {
         _tableItems = TableItemService.getTableItems(widget.tableId);
+
+        // remove item from selection if it has been removed from unpaid items
+        if (_tableItemsSubscription != null) { _tableItemsSubscription.cancel(); }
+        _tableItemsSubscription = TableItemService.getTableItems(widget.tableId).listen((List<TableItemModel> tableItems) {
+          List<TableItemModel> unpaidTableItems =
+              tableItems.where((item) => item.paidForAt == null).toList();
+
+          Set<String> selectedItemIdsToRemove = Set<String>();
+          _selectedItemIds.forEach((itemId) {
+            if (!unpaidTableItems.any((item) => item.id == itemId)) {
+              selectedItemIdsToRemove.add(itemId);
+            }
+          });
+
+          if (selectedItemIdsToRemove.length > 0) {
+            setState(() {
+              selectedItemIdsToRemove.forEach((itemId) {
+                _selectedItems.removeWhere((selectedItem) => selectedItem.id == itemId);
+                _selectedItemIds.remove(itemId);
+              });
+            });
+          }
+        });
       });
     });
   }
@@ -57,6 +81,7 @@ class _TableViewState extends State<TableView> {
   void dispose() {
     super.dispose();
     if (_websocketSubscription != null) { _websocketSubscription.cancel(); }
+    if (_tableItemsSubscription != null) { _tableItemsSubscription.cancel(); }
     if (_itemPaySubscription != null) { _itemPaySubscription.cancel(); }
   }
 
