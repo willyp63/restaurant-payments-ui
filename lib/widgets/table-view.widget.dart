@@ -11,6 +11,7 @@ import '../models/table.model.dart';
 import '../models/table-item.model.dart';
 import '../services/table.service.dart';
 import '../services/table-item.service.dart';
+import '../services/table-event.service.dart';
 import '../services/websocket.service.dart';
 import '../services/user.service.dart';
 
@@ -26,6 +27,7 @@ class TableView extends StatefulWidget {
 class _TableViewState extends State<TableView> {
   Future<TableModel> table;
   Observable<List<TableItemModel>> _tableItems;
+  Observable<int> _numUnseenEvents;
   StreamSubscription _websocketSubscription;
   StreamSubscription _tableItemsSubscription;
   StreamSubscription _itemPaySubscription;
@@ -50,10 +52,14 @@ class _TableViewState extends State<TableView> {
     _websocketSubscription = WebSocketService.onReconnect(() {
       setState(() {
         _tableItems = TableItemService.getTableItems(widget.tableId);
+        _numUnseenEvents = TableEventService.getNumUnseenEvents(widget.tableId);
 
         // remove item from selection if it has been removed from unpaid items
-        if (_tableItemsSubscription != null) { _tableItemsSubscription.cancel(); }
-        _tableItemsSubscription = TableItemService.getTableItems(widget.tableId).listen((List<TableItemModel> tableItems) {
+        if (_tableItemsSubscription != null) {
+          _tableItemsSubscription.cancel();
+        }
+        _tableItemsSubscription = TableItemService.getTableItems(widget.tableId)
+            .listen((List<TableItemModel> tableItems) {
           List<TableItemModel> unpaidTableItems =
               tableItems.where((item) => item.paidForAt == null).toList();
 
@@ -67,7 +73,8 @@ class _TableViewState extends State<TableView> {
           if (selectedItemIdsToRemove.length > 0) {
             setState(() {
               selectedItemIdsToRemove.forEach((itemId) {
-                _selectedItems.removeWhere((selectedItem) => selectedItem.id == itemId);
+                _selectedItems
+                    .removeWhere((selectedItem) => selectedItem.id == itemId);
                 _selectedItemIds.remove(itemId);
               });
             });
@@ -80,17 +87,23 @@ class _TableViewState extends State<TableView> {
   @override
   void dispose() {
     super.dispose();
-    if (_websocketSubscription != null) { _websocketSubscription.cancel(); }
-    if (_tableItemsSubscription != null) { _tableItemsSubscription.cancel(); }
-    if (_itemPaySubscription != null) { _itemPaySubscription.cancel(); }
+    if (_websocketSubscription != null) {
+      _websocketSubscription.cancel();
+    }
+    if (_tableItemsSubscription != null) {
+      _tableItemsSubscription.cancel();
+    }
+    if (_itemPaySubscription != null) {
+      _itemPaySubscription.cancel();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
       return Center(
-          child: CircularProgressIndicator(),
-        );
+        child: CircularProgressIndicator(),
+      );
     }
 
     return FutureBuilder(
@@ -113,35 +126,30 @@ class _TableViewState extends State<TableView> {
             appBar: AppBar(
               title: Text(table.name),
               actions: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.people),
-                  onPressed: _goToTableUsersView,
-                ),
-                IconButton(
-                  icon: Icon(Icons.list),
-                  onPressed: _goToTableEventsView,
-                ),
+                _buildEventsButton(),
               ],
             ),
             body: Stack(
               children: <Widget>[
                 Container(
                   padding: EdgeInsets.only(
-                      bottom: _selectedItems.length > 0 ? 214 : 0),
+                      bottom: _selectedItems.length > 0 ? 192 : 0),
                   child: _buildBothTableItemLists(),
                 ),
                 _selectedItems.length > 0
                     ? Positioned(
                         // red box
                         child: Container(
-                          height: 214,
+                          height: 192,
+                          padding: EdgeInsets.all(16.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               _buildFooterRow(
                                   'Your Items:', selectedItemsTotal),
                               Container(
-                                padding: EdgeInsets.symmetric(vertical: 8),
+                                height: 40,
                                 child: Flex(
                                   direction: Axis.horizontal,
                                   mainAxisAlignment:
@@ -177,12 +185,11 @@ class _TableViewState extends State<TableView> {
                               ),
                               _buildFooterRow('Your Total:', finalTotal),
                               Container(
-                                padding: EdgeInsets.only(top: 8),
+                                padding: EdgeInsets.only(top: 16),
+                                height: 56,
                                 child: RaisedButton(
                                   color: Theme.of(context).primaryColor,
                                   textColor: Colors.white,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16, vertical: 8),
                                   child: Text('Pay for Items', style: _bigFont),
                                   onPressed: _onPayPressed,
                                 ),
@@ -204,7 +211,6 @@ class _TableViewState extends State<TableView> {
                               ),
                             ],
                           ),
-                          padding: EdgeInsets.all(16.0),
                         ),
                         bottom: 0,
                         left: 0,
@@ -226,9 +232,60 @@ class _TableViewState extends State<TableView> {
     );
   }
 
+  Widget _buildEventsButton() {
+    return StreamBuilder(
+      stream: _numUnseenEvents,
+      builder: (context, snapshot) {
+        int numEvents = 0;
+        if (snapshot.hasData) {
+          numEvents = snapshot.data;
+        } else if (snapshot.hasError) {
+          throw snapshot.error;
+        }
+
+        return GestureDetector(
+          onTap: _goToTableEventsView,
+          child: Stack(
+            children: <Widget>[
+              IconButton(
+                icon: Icon(Icons.list, color: Colors.white),
+                onPressed: null,
+              ),
+              numEvents == 0
+                ? Container()
+                : Positioned(
+                  top: 6,
+                  right: 4,
+                  child: Stack(
+                  children: <Widget>[
+                  Icon(Icons.brightness_1,
+                      size: 20.0, color: Colors.orange[800]),
+                  Positioned(
+                      top: 0,
+                      left: 0,
+                      width: 20,
+                      height: 20,
+                      child: Center(
+                        child: Text(
+                          numEvents.toString(),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 11.0,
+                            fontWeight: FontWeight.w500),
+                        ),
+                      )),
+                    ],
+                  )),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   Widget _buildFooterRow(String label, num amount) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 8),
+      height: 32,
       child: Flex(
         direction: Axis.horizontal,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -257,7 +314,7 @@ class _TableViewState extends State<TableView> {
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: Text('Unpaid:', style: _boldFont),
-                  decoration: new BoxDecoration(
+                  decoration: BoxDecoration(
                     color: Colors.grey[300],
                   ),
                 ),
@@ -267,7 +324,7 @@ class _TableViewState extends State<TableView> {
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: Text('Paid for:', style: _boldFont),
-                  decoration: new BoxDecoration(
+                  decoration: BoxDecoration(
                     color: Colors.grey[300],
                   ),
                 ),
@@ -303,9 +360,15 @@ class _TableViewState extends State<TableView> {
                       isItemSelected
                           ? Icons.radio_button_checked
                           : Icons.radio_button_unchecked,
-                      color: isItemSelected ? Theme.of(context).primaryColor : Colors.grey,
+                      color: isItemSelected
+                          ? Theme.of(context).primaryColor
+                          : Colors.grey,
                     )
-                  : Text('Paid for by: ' + formatName(item.paidForBy, UserService.getActiveUser()), style: _greyFont),
+                  : Text(
+                      'Paid for by: ' +
+                          formatName(
+                              item.paidForBy, UserService.getActiveUser()),
+                      style: _greyFont),
               onTap: () {
                 if (!isSelectable) {
                   return;
@@ -313,7 +376,8 @@ class _TableViewState extends State<TableView> {
 
                 setState(() {
                   if (isItemSelected) {
-                    _selectedItems.removeWhere((selectedItem) => selectedItem.id == item.id);
+                    _selectedItems.removeWhere(
+                        (selectedItem) => selectedItem.id == item.id);
                     _selectedItemIds.remove(item.id);
                   } else {
                     _selectedItems.add(item);
@@ -333,7 +397,7 @@ class _TableViewState extends State<TableView> {
     setState(() {
       _isLoading = true;
     });
-    
+
     _selectedItems.forEach((TableItemModel item) {
       TableItemService.payForTableItem(item.id);
     });

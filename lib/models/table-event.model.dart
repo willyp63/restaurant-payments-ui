@@ -10,28 +10,24 @@ enum TableEventType {
 abstract class TableEventModel {
   TableEventType type;
   String date;
+  UserModel user;
 
-  TableEventModel({this.type, this.date});
+  TableEventModel({this.type, this.date, this.user});
 }
 
 class ItemPayEventModel extends TableEventModel {
   TableItemModel tableItem;
-  UserModel user;
-
-  ItemPayEventModel({String date, this.tableItem, this.user})
-    : super(type: TableEventType.ItemPay, date: date);
+  
+  ItemPayEventModel({String date, this.tableItem, UserModel user})
+    : super(type: TableEventType.ItemPay, date: date, user: user);
 }
 
 class UserJoinEventModel extends TableEventModel {
-  UserModel user;
-
-  UserJoinEventModel({String date, this.user})
-    : super(type: TableEventType.UserJoin, date: date);
+  UserJoinEventModel({String date, UserModel user})
+    : super(type: TableEventType.UserJoin, date: date, user: user);
 }
 
 class UserLeaveEventModel extends TableEventModel {
-  UserModel user;
-
-  UserLeaveEventModel({String date, this.user})
-    : super(type: TableEventType.UserLeave, date: date);
+  UserLeaveEventModel({String date, UserModel user})
+    : super(type: TableEventType.UserLeave, date: date, user: user);
 }

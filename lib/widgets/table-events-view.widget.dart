@@ -2,12 +2,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../models/user.model.dart';
-import '../models/table-item.model.dart';
 import '../models/table-event.model.dart';
 import '../services/user.service.dart';
 import '../services/websocket.service.dart';
-import '../services/table-item.service.dart';
+import '../services/table-event.service.dart';
 import '../utils/table-event.utils.dart';
 import '../utils/table-item.utils.dart';
 
@@ -28,45 +26,11 @@ class _TableEventsViewState extends State<TableEventsView> {
   void initState() {
     super.initState();
 
+    TableEventService.seeEvents(widget.tableId);
+
     _eventsSubscription = WebSocketService.onReconnect(() {
       setState(() {
-        _events = Observable.combineLatest2<List<UserModel>, List<TableItemModel>, List<TableEventModel>>(
-          UserService.getTableUsers(widget.tableId),
-          TableItemService.getTableItems(widget.tableId),
-          (List<UserModel> users, List<TableItemModel> tableItems) {
-
-            List<ItemPayEventModel> itemPayEvents = tableItems
-              .where((item) => item.paidForAt != null)
-              .map((item) {
-                return new ItemPayEventModel(
-                  date: item.paidForAt,
-                  tableItem: item,
-                  user: item.paidForBy,
-                );
-              }).toList();
-
-            List<UserJoinEventModel> userJoinEvents = users
-              .map((user) {
-                return new UserJoinEventModel(
-                  date: user.joinedTableAt,
-                  user: user,
-                );
-              }).toList();
-
-            // List<UserLeaveEventModel> userLeaveEvents = users
-            //   .where((user) => user.leftTableAt != null)
-            //   .map((user) {
-            //     return new UserLeaveEventModel(
-            //       date: user.leftTableAt,
-            //       user: user,
-            //     );
-            //   }).toList();
-
-            List<TableEventModel> events = [itemPayEvents, userJoinEvents].expand((x) => x).toList();
-            events.sort((a, b) => a.date.compareTo(b.date));
-            return events;
-          },
-        );
+        _events = TableEventService.getTableEvents(widget.tableId);
       });
     });
   }
