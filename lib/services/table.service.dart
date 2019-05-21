@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-import '../models/table.model.dart';
-import '../constants/api-routes.constants.dart';
-import '../utils/route.utils.dart';
+import '../models/index.dart';
+import '../utils/index.dart';
+import '../constants/index.dart';
 
 class TableService {
 

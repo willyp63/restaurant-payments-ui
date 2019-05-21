@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 
 import './string.utils.dart';
-import '../models/table-item.model.dart';
+import '../models/index.dart';
 
 final currencyFormatter = NumberFormat.currency(symbol: '\$');
 final percentFormatter = NumberFormat.percentPattern();

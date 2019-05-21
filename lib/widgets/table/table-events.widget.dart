@@ -2,23 +2,20 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../models/table-event.model.dart';
-import '../services/user.service.dart';
-import '../services/websocket.service.dart';
-import '../services/table-event.service.dart';
-import '../utils/table-event.utils.dart';
-import '../utils/table-item.utils.dart';
+import '../../models/index.dart';
+import '../../utils/index.dart';
+import '../../services/index.dart';
 
-class TableEventsView extends StatefulWidget {
+class MMSTableEvents extends StatefulWidget {
   final String tableId;
 
-  TableEventsView(this.tableId);
+  MMSTableEvents(this.tableId);
 
   @override
-  _TableEventsViewState createState() => _TableEventsViewState();
+  _MMSTableEventsState createState() => _MMSTableEventsState();
 }
 
-class _TableEventsViewState extends State<TableEventsView> {
+class _MMSTableEventsState extends State<MMSTableEvents> {
   Observable<List<TableEventModel>> _events;
   StreamSubscription _eventsSubscription;
 

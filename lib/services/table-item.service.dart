@@ -2,11 +2,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:rxdart/rxdart.dart';
 
-import '../models/table-item.model.dart';
-import '../models/table-item-pay.model.dart';
-import '../constants/api-routes.constants.dart';
-import '../constants/socket-events.constants.dart';
-import '../utils/route.utils.dart';
+import '../models/index.dart';
+import '../utils/index.dart';
+import '../constants/index.dart';
 import '../services/websocket.service.dart';
 import '../services/user.service.dart';
 

@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
-import 'widgets/signup.widget.dart';
+
+import './constants/index.dart';
+
+import 'widgets/home/home.widget.dart';
+import 'widgets/past-tables/past-tables.widget.dart';
+import 'widgets/join-table/join-table.widget.dart';
+import 'widgets/signup/signup.widget.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,8 +18,14 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.blue[700],
         accentColor: Colors.blue[700],
       ),
-      home: SignUp(),
       debugShowCheckedModeBanner: false,
+      initialRoute: AppRoutes.signUp,
+      routes: {
+        AppRoutes.home: (_) => MMSHome(),
+        AppRoutes.pastTables: (_) => MMSPastTables(),
+        AppRoutes.joinTable: (_) => MMSJoinTable(),
+        AppRoutes.signUp: (_) => MMSSignUp(),
+      },
     );
   }
 }

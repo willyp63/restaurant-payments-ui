@@ -3,15 +3,11 @@ import 'package:http/http.dart' as http;
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../models/user.model.dart';
-import '../models/table.model.dart';
-import '../models/table-join.model.dart';
-import '../constants/api-routes.constants.dart';
-import '../utils/route.utils.dart';
+import '../models/index.dart';
+import '../utils/index.dart';
+import '../constants/index.dart';
 import '../services/websocket.service.dart';
 import '../services/table-item.service.dart';
-import '../constants/socket-events.constants.dart';
-import '../constants/local-storage.constants.dart';
 
 class UserService {
   static UserModel _activeUser;

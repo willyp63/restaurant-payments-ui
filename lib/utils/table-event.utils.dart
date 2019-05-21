@@ -1,7 +1,6 @@
-import '../models/table-event.model.dart';
-import '../models/user.model.dart';
-import './name.utils.dart';
+import './user.utils.dart';
 import './table-item.utils.dart';
+import '../models/index.dart';
 
 String formatTableEvent(TableEventModel event, UserModel activeUser) {
   switch (event.type) {
@@ -16,13 +15,13 @@ String formatTableEvent(TableEventModel event, UserModel activeUser) {
 }
 
 String _formatItemPayEvent(ItemPayEventModel event, UserModel activeUser) {
-  return formatName(event.user, activeUser) + ' paid for ' + formatTableItem(event.tableItem) + '.';
+  return formatUser(event.user, activeUser) + ' paid for ' + formatTableItem(event.tableItem) + '.';
 }
 
 String _formatUserJoinEvent(UserJoinEventModel event, UserModel activeUser) {
-  return formatName(event.user, activeUser) + ' joined the table.';
+  return formatUser(event.user, activeUser) + ' joined the table.';
 }
 
 String _formatUserLeaveEvent(UserLeaveEventModel event, UserModel activeUser) {
-  return formatName(event.user, activeUser) + ' left the table.';
+  return formatUser(event.user, activeUser) + ' left the table.';
 }

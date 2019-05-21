@@ -2,9 +2,7 @@ import 'package:rxdart/rxdart.dart';
 
 import '../services/user.service.dart';
 import '../services/table-item.service.dart';
-import '../models/table-event.model.dart';
-import '../models/user.model.dart';
-import '../models/table-item.model.dart';
+import '../models/index.dart';
 
 class TableEventService {
 

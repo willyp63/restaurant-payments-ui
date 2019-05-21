@@ -2,29 +2,23 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
-import './home.widget.dart';
-import './table-events-view.widget.dart';
-import './table-users-view.widget.dart';
-import '../utils/table-item.utils.dart';
-import '../utils/name.utils.dart';
-import '../models/table.model.dart';
-import '../models/table-item.model.dart';
-import '../services/table.service.dart';
-import '../services/table-item.service.dart';
-import '../services/table-event.service.dart';
-import '../services/websocket.service.dart';
-import '../services/user.service.dart';
+import '../../models/index.dart';
+import '../../utils/index.dart';
+import '../../constants/index.dart';
+import '../../services/index.dart';
 
-class TableView extends StatefulWidget {
+import './table-events.widget.dart';
+
+class MMSTable extends StatefulWidget {
   final String tableId;
 
-  TableView(this.tableId);
+  MMSTable(this.tableId);
 
   @override
-  _TableViewState createState() => _TableViewState();
+  _MMSTableState createState() => _MMSTableState();
 }
 
-class _TableViewState extends State<TableView> {
+class _MMSTableState extends State<MMSTable> {
   Future<TableModel> table;
   Observable<List<TableItemModel>> _tableItems;
   Observable<int> _numUnseenEvents;
@@ -366,7 +360,7 @@ class _TableViewState extends State<TableView> {
                     )
                   : Text(
                       'Paid for by: ' +
-                          formatName(
+                          formatUser(
                               item.paidForBy, UserService.getActiveUser()),
                       style: _greyFont),
               onTap: () {
@@ -405,27 +399,14 @@ class _TableViewState extends State<TableView> {
     _itemPaySubscription = TableItemService.onTableItemPaidFor().listen((_) {
       _itemPaySubscription.cancel();
 
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute<void>(
-          builder: (context) => Home(),
-        ),
-        (_) => false,
-      );
+      Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.home, (_) => false);
     });
-  }
-
-  _goToTableUsersView() {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (context) => TableUsersView(widget.tableId),
-      ),
-    );
   }
 
   _goToTableEventsView() {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
-        builder: (context) => TableEventsView(widget.tableId),
+        builder: (context) => MMSTableEvents(widget.tableId),
       ),
     );
   }

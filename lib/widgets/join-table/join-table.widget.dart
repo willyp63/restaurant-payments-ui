@@ -4,15 +4,15 @@ import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import './table-view.widget.dart';
-import '../services/user.service.dart';
+import '../../services/index.dart';
+import '../table/table.widget.dart';
 
-class QRReader extends StatefulWidget {
+class MMSJoinTable extends StatefulWidget {
   @override
-  _QRReaderState createState() => new _QRReaderState();
+  _MMSJoinTableState createState() => new _MMSJoinTableState();
 }
 
-class _QRReaderState extends State<QRReader> {
+class _MMSJoinTableState extends State<MMSJoinTable> {
   @override
   initState() {
     super.initState();
@@ -26,8 +26,8 @@ class _QRReaderState extends State<QRReader> {
 
   Future _scan() async {
     try {
-      String qrCode = await BarcodeScanner.scan();
-      _goToTableView(qrCode);
+      String tableId = await BarcodeScanner.scan();
+      _goToTableView(tableId);
     } on PlatformException catch (e) {
       if (e.code == BarcodeScanner.CameraAccessDenied) {
         print('The user did not grant the camera permission!');
@@ -46,7 +46,7 @@ class _QRReaderState extends State<QRReader> {
 
     Navigator.of(context).pushReplacement(
       MaterialPageRoute<void>(
-        builder: (context) => TableView(tableId),
+        builder: (context) => MMSTable(tableId),
       ),
     );
   }

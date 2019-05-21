@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:web_socket_channel/io.dart';
 import 'package:rxdart/rxdart.dart';
 
-import '../models/json-convertable.model.dart';
-import '../constants/api-routes.constants.dart';
+import '../models/index.dart';
+import '../constants/index.dart';
 
 class WebSocketService {
 

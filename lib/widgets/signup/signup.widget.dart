@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-import './home.widget.dart';
-import '../models/input-field.model.dart';
-import '../models/user.model.dart';
-import '../services/user.service.dart';
+import '../../models/index.dart';
+import '../../constants/index.dart';
+import '../../services/index.dart';
+import '../shared/index.dart';
 
-class SignUp extends StatefulWidget {
+class MMSSignUp extends StatefulWidget {
   @override
-  _SignUpState createState() => _SignUpState();
+  _MMSSignUpState createState() => _MMSSignUpState();
 }
 
-class _SignUpState extends State<SignUp> {
+class _MMSSignUpState extends State<MMSSignUp> {
   InputFieldModel _firstName = new InputFieldModel(value: '');
   InputFieldModel _lastName = new InputFieldModel(value: '');
   bool _isLoading = true;
@@ -19,7 +19,7 @@ class _SignUpState extends State<SignUp> {
   void initState() {
     super.initState();
 
-    // attempt to load user from local storage, and skip signin
+    // attempt to load user from local storage and skip signup
     UserService.loadStoredUser().then((didFindUser) {
       if (didFindUser) { _goToHome(); }
       else { setState(() { _isLoading = false; }); }
@@ -28,13 +28,7 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
-      return Scaffold(
-        body: Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
-    }
+    if (_isLoading) { return MMSFullPageSpinner(); }
 
     return Scaffold(
       appBar: AppBar(
@@ -111,10 +105,6 @@ class _SignUpState extends State<SignUp> {
   }
 
   void _goToHome() {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute<void>(
-        builder: (context) => Home(),
-      ),
-    );
+    Navigator.of(context).pushReplacementNamed(AppRoutes.home);
   }
 }
