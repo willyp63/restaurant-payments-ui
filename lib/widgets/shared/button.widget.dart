@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../constants/index.dart';
+import '../../theme/colors.dart';
 
 enum MMSButtonType {
   Primary,
   Secondary,
+  Tertiary,
 }
 
 class MMSButton extends StatelessWidget {
@@ -12,31 +13,46 @@ class MMSButton extends StatelessWidget {
   final String text;
   final void Function() onPressed;
 
-  final EdgeInsets padding = const EdgeInsets.symmetric(horizontal: 16, vertical: 8);
+  final padding = const EdgeInsets.symmetric(horizontal: 32, vertical: 16);
+  final shape = RoundedRectangleBorder(borderRadius: BorderRadius.circular(0));
 
   MMSButton({this.type = MMSButtonType.Primary, this.text, this.onPressed});
 
   @override
   Widget build(context) {
-    final textWidget = new Text(text, style: Fonts.lg);
+    final primaryTextStyle = Theme.of(context).textTheme.button.merge(TextStyle(color: Theme.of(context).primaryColor));
+    final whiteTextStyle = Theme.of(context).textTheme.button.merge(TextStyle(color: MMSColors.white));
 
-    if (type == MMSButtonType.Primary) {
-      return RaisedButton(
-        color: Theme.of(context).primaryColor,
-        textColor: Colors.white,
-        padding: padding,
-        child: textWidget,
-        onPressed: onPressed,
-      );
+    switch (type) {
+      case MMSButtonType.Primary:
+        return FlatButton(
+          color: Theme.of(context).primaryColor,
+          child: Text(text, style: whiteTextStyle),
+          onPressed: onPressed,
+          padding: padding,
+          shape: shape,
+        );
+      case MMSButtonType.Secondary:
+        return OutlineButton(
+          borderSide: BorderSide(
+            color: Theme.of(context).primaryColor,
+            style: BorderStyle.solid,
+            width: 2,
+          ),
+          child: Text(text, style: primaryTextStyle),
+          onPressed: onPressed,
+          padding: padding,
+          shape: shape,
+        );
+      case MMSButtonType.Tertiary:
+        return FlatButton(
+          child: Text(text, style: primaryTextStyle),
+          onPressed: onPressed,
+          padding: padding,
+        );
     }
 
-    // MMSButtonType.Secondary
-    return FlatButton(
-      textColor: Theme.of(context).primaryColor,
-      padding: padding,
-      child: textWidget,
-      onPressed: onPressed,
-    );
+    return null;
 	}
 
 }

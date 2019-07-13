@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import './theme/app-theme.dart';
+
 import './constants/index.dart';
 
 import 'widgets/home/home.widget.dart';
@@ -13,11 +15,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Restaurant Payments',
-      theme: ThemeData(
-        primaryColor: Colors.blue[700],
-        accentColor: Colors.blue[700],
-      ),
+      title: 'Mimos',
+      theme: appTheme,
       debugShowCheckedModeBanner: false,
       initialRoute: AppRoutes.signUp,
       routes: {
