@@ -6,6 +6,7 @@ enum MMSButtonType {
   Primary,
   Secondary,
   Tertiary,
+  Link,
 }
 
 class MMSButton extends StatelessWidget {
@@ -14,6 +15,7 @@ class MMSButton extends StatelessWidget {
   final void Function() onPressed;
 
   final padding = const EdgeInsets.symmetric(horizontal: 24, vertical: 12);
+  final noPadding = const EdgeInsets.all(0);
   final shape = RoundedRectangleBorder(borderRadius: BorderRadius.circular(0));
 
   MMSButton({this.type = MMSButtonType.Primary, this.text, this.onPressed});
@@ -22,6 +24,7 @@ class MMSButton extends StatelessWidget {
   Widget build(context) {
     final primaryTextStyle = Theme.of(context).textTheme.button.merge(TextStyle(color: Theme.of(context).primaryColor));
     final whiteTextStyle = Theme.of(context).textTheme.button.merge(TextStyle(color: MMSColors.white));
+    final linkTextStyle = Theme.of(context).textTheme.subhead.merge(TextStyle(color: Theme.of(context).primaryColor));
 
     switch (type) {
       case MMSButtonType.Primary:
@@ -49,6 +52,11 @@ class MMSButton extends StatelessWidget {
           child: Text(text, style: primaryTextStyle),
           onPressed: onPressed,
           padding: padding,
+        );
+      case MMSButtonType.Link:
+        return InkWell(
+          child: Text(text, style: linkTextStyle),
+          onTap: onPressed,
         );
     }
 
