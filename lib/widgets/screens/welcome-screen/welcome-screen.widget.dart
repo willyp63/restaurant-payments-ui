@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../../../theme/colors.dart';
 import '../../shared/button.widget.dart';
+import '../../../constants/app-routes.constants.dart';
 
 class MMSWelcomeScreen extends StatelessWidget {
   @override
@@ -54,15 +55,15 @@ class MMSWelcomeScreen extends StatelessWidget {
                                 child: MMSButton(
                                   text: 'Join',
                                   onPressed: () {
-                                    // TODO
-                                  },
+                                  Navigator.of(context).pushReplacementNamed(AppRoutes.signUp);
+                                },
                                 ),
                               ),
                               MMSButton(
                                 type: MMSButtonType.Secondary,
                                 text: 'Login',
                                 onPressed: () {
-                                  // TODO
+                                  Navigator.of(context).pushReplacementNamed(AppRoutes.login);
                                 },
                               ),
                             ],

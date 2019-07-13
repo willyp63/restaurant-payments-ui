@@ -4,4 +4,5 @@ class AppRoutes {
   static String joinTable = '/join-table';
   static String signUp = '/sign-up';
   static String welcome = '/welcome';
+  static String login = '/login';
 }
