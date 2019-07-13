@@ -13,7 +13,7 @@ class MMSButton extends StatelessWidget {
   final String text;
   final void Function() onPressed;
 
-  final padding = const EdgeInsets.symmetric(horizontal: 32, vertical: 16);
+  final padding = const EdgeInsets.symmetric(horizontal: 24, vertical: 12);
   final shape = RoundedRectangleBorder(borderRadius: BorderRadius.circular(0));
 
   MMSButton({this.type = MMSButtonType.Primary, this.text, this.onPressed});
@@ -37,7 +37,7 @@ class MMSButton extends StatelessWidget {
           borderSide: BorderSide(
             color: Theme.of(context).primaryColor,
             style: BorderStyle.solid,
-            width: 2,
+            width: 1,
           ),
           child: Text(text, style: primaryTextStyle),
           onPressed: onPressed,
