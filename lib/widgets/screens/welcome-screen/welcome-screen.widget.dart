@@ -53,13 +53,17 @@ class MMSWelcomeScreen extends StatelessWidget {
                                 padding: EdgeInsets.only(right: 24),
                                 child: MMSButton(
                                   text: 'Join',
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    // TODO
+                                  },
                                 ),
                               ),
                               MMSButton(
                                 type: MMSButtonType.Secondary,
                                 text: 'Login',
-                                onPressed: () {},
+                                onPressed: () {
+                                  // TODO
+                                },
                               ),
                             ],
                           ),
