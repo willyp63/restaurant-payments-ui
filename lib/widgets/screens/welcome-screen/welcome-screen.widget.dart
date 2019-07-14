@@ -55,7 +55,7 @@ class MMSWelcomeScreen extends StatelessWidget {
                                 child: MMSButton(
                                   text: 'Join',
                                   onPressed: () {
-                                  Navigator.of(context).pushReplacementNamed(AppRoutes.signUp);
+                                  Navigator.of(context).pushNamed(AppRoutes.signUp);
                                 },
                                 ),
                               ),
@@ -63,7 +63,7 @@ class MMSWelcomeScreen extends StatelessWidget {
                                 type: MMSButtonType.Secondary,
                                 text: 'Login',
                                 onPressed: () {
-                                  Navigator.of(context).pushReplacementNamed(AppRoutes.login);
+                                  Navigator.of(context).pushNamed(AppRoutes.login);
                                 },
                               ),
                             ],
