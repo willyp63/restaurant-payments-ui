@@ -5,10 +5,25 @@ import '../../shared/text-field.widget.dart';
 import '../../shared/form-template.widget.dart';
 import '../../../constants/app-routes.constants.dart';
 
-class MMSLoginScreen extends StatelessWidget {
+class MMSLoginScreen extends StatefulWidget {
+  @override
+  _MMSLoginScreenState createState() => _MMSLoginScreenState();
+}
+
+class _MMSLoginScreenState extends State<MMSLoginScreen> {
+  bool _isLoading;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _isLoading = false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return MMSFormTemplate(
+      isLoading: _isLoading,
       children: <Widget>[
         Container(
           margin: EdgeInsets.only(top: 30),
@@ -35,6 +50,9 @@ class MMSLoginScreen extends StatelessWidget {
             text: 'Sign in',
             onPressed: () {
               // TODO
+              setState(() {
+                _isLoading = true;
+              });
             },
           ),
         ),
