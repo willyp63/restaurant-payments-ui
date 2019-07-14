@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../theme/colors.dart';
+import '../../../constants/app-routes.constants.dart';
 
 class MMSHomeScreen extends StatelessWidget {
   @override
@@ -45,7 +46,7 @@ class MMSHomeScreen extends StatelessWidget {
                   child: Icon(Icons.camera_alt, size: 80, color: MMSColors.teal),
                 ),
                 onTap: () {
-                  // TODO: open scanner
+                  Navigator.of(context).pushNamed(AppRoutes.scanCode);
                 },
               ),
             ),
