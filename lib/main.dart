@@ -22,12 +22,12 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: AppRoutes.welcome,
       routes: {
+        AppRoutes.welcome: (_) => MMSWelcomeScreen(),
+        AppRoutes.signUp: (_) => MMSSignupScreen(),
+        AppRoutes.login: (_) => MMSLoginScreen(),
         AppRoutes.home: (_) => MMSHomeScreen(),
         AppRoutes.pastTables: (_) => MMSPastTables(),
         AppRoutes.joinTable: (_) => MMSJoinTable(),
-        AppRoutes.signUp: (_) => MMSSignupScreen(),
-        AppRoutes.welcome: (_) => MMSWelcomeScreen(),
-        AppRoutes.login: (_) => MMSLoginScreen(),
       },
     );
   }

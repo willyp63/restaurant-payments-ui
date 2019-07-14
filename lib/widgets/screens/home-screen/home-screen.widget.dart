@@ -9,6 +9,7 @@ class MMSHomeScreen extends StatelessWidget {
       backgroundColor: MMSColors.babyPowder,
       appBar: AppBar(
         elevation: 0,
+        centerTitle: true,
         title: Container(
           width: 100,
           child: Image.asset('images/mimos_logo_white.png'),
