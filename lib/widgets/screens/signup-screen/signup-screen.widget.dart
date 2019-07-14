@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../../shared/button.widget.dart';
@@ -72,6 +73,9 @@ class _MMSSignupScreenState extends State<MMSSignupScreen> {
               // TODO
               setState(() {
                 _isLoading = true;
+                new Timer(new Duration(milliseconds: 2000), () {
+                  Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false);
+                });
               });
             },
           ),
