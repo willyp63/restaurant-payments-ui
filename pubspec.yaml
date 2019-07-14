@@ -54,6 +54,7 @@ flutter:
   # https://flutter.io/assets-and-images/#resolution-aware.
   assets:
     - images/mimos_logo.png
+    - images/mimos_logo_white.png
     - images/silverware.png
     - images/restaurant.jpg
 
