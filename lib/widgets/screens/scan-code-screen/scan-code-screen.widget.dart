@@ -16,7 +16,7 @@ class _MMSScanCodeScreenState extends State<MMSScanCodeScreen>
     with SingleTickerProviderStateMixin {
   QRReaderController controller;
   final double boxSize = 300.0;
-  final double boxBorderWidth = 4.0;
+  final double boxBorderWidth = 3.0;
   final double boxCornerRatio = 1 / 4;
   final Color boxColor = MMSColors.violet;
 
