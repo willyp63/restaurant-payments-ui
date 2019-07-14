@@ -11,6 +11,8 @@ class MMSColors {
   // Gray-scale
   static const white = const Color(0xFFFFFFFF);
   static const lightGray = const Color(0xFFF2F2F2);
+  static const warmGray = const Color(0xFFDCDCDC);
   static const gray = const Color(0xFF70829C);
+  static const darkGray = const Color(0xFF404040);
   static const black = const Color(0xFF342E36);
 }
