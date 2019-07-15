@@ -1,4 +1,3 @@
-export './input-field.model.dart';
 export './json-convertable.model.dart';
 export './table-event.model.dart';
 export './table-item-pay.model.dart';

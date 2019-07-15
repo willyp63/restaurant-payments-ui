@@ -1,17 +1,53 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/colors.dart';
+import 'package:restaurant_payments_ui/theme/colors.dart';
 
-class MMSTextField extends StatelessWidget {
+class MMSTextField extends StatefulWidget {
   final String label;
+  final String errorText;
   final ValueChanged<String> onChanged;
+  final VoidCallback onBlur;
   final bool obscureText;
 
-  MMSTextField({this.label, this.onChanged, this.obscureText = false});
+  MMSTextField({
+    this.label,
+    this.errorText,
+    this.onChanged,
+    this.onBlur,
+    this.obscureText = false,
+  });
+
+  @override
+  _MMSTextFieldState createState() => _MMSTextFieldState();
+}
+
+class _MMSTextFieldState extends State<MMSTextField> {
+  FocusNode focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+
+    focusNode = FocusNode();
+
+    focusNode.addListener(() {
+      if (!focusNode.hasFocus) {
+        widget.onBlur();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    focusNode.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(context) {
     return TextField(
+      focusNode: focusNode,
       decoration: InputDecoration(
         fillColor: MMSColors.white,
         filled: true,
@@ -23,11 +59,12 @@ class MMSTextField extends StatelessWidget {
           ),
           borderRadius: BorderRadius.circular(0),
         ),
-        hintText: label,
+        hintText: widget.label,
+        errorText: widget.errorText,
         contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       ),
-      onChanged: onChanged,
-      obscureText: obscureText,
+      onChanged: widget.onChanged,
+      obscureText: widget.obscureText,
     );
   }
 }

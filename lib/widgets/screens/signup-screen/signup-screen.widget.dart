@@ -1,10 +1,17 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 
-import '../../shared/button.widget.dart';
-import '../../shared/text-field.widget.dart';
-import '../../shared/form-template.widget.dart';
-import '../../../constants/app-routes.constants.dart';
+import 'package:restaurant_payments_ui/models/user.model.dart';
+import 'package:restaurant_payments_ui/services/index.dart';
+import 'package:restaurant_payments_ui/utils/forms/index.dart';
+import 'package:restaurant_payments_ui/widgets/shared/index.dart';
+import 'package:restaurant_payments_ui/constants/index.dart';
+
+class MMSSignupInputNames {
+  static String email = 'email';
+  static String firstName = 'firstName';
+  static String lastName = 'lastName';
+  static String password = 'password';
+}
 
 class MMSSignupScreen extends StatefulWidget {
   @override
@@ -12,14 +19,29 @@ class MMSSignupScreen extends StatefulWidget {
 }
 
 class _MMSSignupScreenState extends State<MMSSignupScreen> {
-  bool _isLoading;
+  MMSFormController _form = new MMSFormController(
+    inputs: {
+      MMSSignupInputNames.email: new MMSInputController<String>(
+        value: '',
+        validators: [emailValidator, requiredValidator],
+      ),
+      MMSSignupInputNames.firstName: new MMSInputController<String>(
+        value: '',
+        validators: [requiredValidator],
+      ),
+      MMSSignupInputNames.lastName: new MMSInputController<String>(
+        value: '',
+        validators: [requiredValidator],
+      ),
+      MMSSignupInputNames.password: new MMSInputController<String>(
+        value: '',
+        validators: [requiredValidator],
+      ),
+    },
+    errorDictionary: errorDictionary,
+  );
 
-  @override
-  void initState() {
-    super.initState();
-
-    _isLoading = false;
-  }
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -27,70 +49,101 @@ class _MMSSignupScreenState extends State<MMSSignupScreen> {
       isLoading: _isLoading,
       children: <Widget>[
         Container(
-          margin: EdgeInsets.only(top: 30),
+          margin: EdgeInsets.only(top: 24),
           child: MMSTextField(
             label: 'email address',
+            errorText: _form.errorMessages[MMSSignupInputNames.email],
             onChanged: (String value) {
-              // TODO
+              setState(() { _form.setValue({ MMSSignupInputNames.email: value }); });
+            },
+            onBlur: () {
+              setState(() { _form.markAsDirty(MMSSignupInputNames.email); });
             },
           ),
         ),
         Container(
-          margin: EdgeInsets.only(top: 20),
+          margin: EdgeInsets.only(top: 16),
           child: MMSTextField(
-            label: 'phone number',
-            obscureText: true,
+            label: 'first name',
+            errorText: _form.errorMessages[MMSSignupInputNames.firstName],
             onChanged: (String value) {
-              // TODO
+              setState(() { _form.setValue({ MMSSignupInputNames.firstName: value }); });
+            },
+            onBlur: () {
+              setState(() { _form.markAsDirty(MMSSignupInputNames.firstName); });
             },
           ),
         ),
         Container(
-          margin: EdgeInsets.only(top: 20),
+          margin: EdgeInsets.only(top: 16),
+          child: MMSTextField(
+            label: 'last name',
+            errorText: _form.errorMessages[MMSSignupInputNames.lastName],
+            onChanged: (String value) {
+              setState(() { _form.setValue({ MMSSignupInputNames.lastName: value }); });
+            },
+            onBlur: () {
+              setState(() { _form.markAsDirty(MMSSignupInputNames.lastName); });
+            },
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 16),
           child: MMSTextField(
             label: 'password',
             obscureText: true,
+            errorText: _form.errorMessages[MMSSignupInputNames.password],
             onChanged: (String value) {
-              // TODO
+              setState(() { _form.setValue({ MMSSignupInputNames.password: value }); });
+            },
+            onBlur: () {
+              setState(() { _form.markAsDirty(MMSSignupInputNames.password); });
             },
           ),
         ),
         Container(
-          margin: EdgeInsets.only(top: 20),
-          child: MMSTextField(
-            label: 'retype password',
-            obscureText: true,
-            onChanged: (String value) {
-              // TODO
-            },
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.only(top: 30),
+          margin: EdgeInsets.only(top: 24),
           child: MMSButton(
             text: 'Let\'s Go',
-            onPressed: () {
-              // TODO
-              setState(() {
-                _isLoading = true;
-                new Timer(new Duration(milliseconds: 2000), () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false);
-                });
-              });
-            },
+            onPressed: _onSignupPressed,
           ),
         ),
         Container(
-          margin: EdgeInsets.only(top: 30),
+          margin: EdgeInsets.only(top: 24),
           child: MMSButton(
             type: MMSButtonType.Link,
             text: 'Sign in',
-            onPressed: () {
-              Navigator.of(context).pushReplacementNamed(AppRoutes.login);
-            },
+            onPressed: _onLoginPressed,
           ),
         ),
       ],
     );
+  }
+
+  _onLoginPressed() {
+    Navigator.of(context).pushReplacementNamed(AppRoutes.login);
+  }
+
+  _onSignupPressed() {
+    setState(() {
+      _form.validate();
+
+      if (_form.isValid) {
+        _isLoading = true;
+
+        final formValue = _form.value;
+        final user = new UserModel(
+          email: formValue[MMSSignupInputNames.email],
+          firstName: formValue[MMSSignupInputNames.firstName],
+          lastName: formValue[MMSSignupInputNames.lastName],
+        );
+
+        UserService.signUpUser(user, formValue[MMSSignupInputNames.password]).then((insertedUser) {
+          _isLoading = false;
+
+          Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.home, (route) => false);
+        });
+      }
+    });
   }
 }
