@@ -5,6 +5,7 @@ import 'package:restaurant_payments_ui/services/index.dart';
 import 'package:restaurant_payments_ui/utils/forms/index.dart';
 import 'package:restaurant_payments_ui/widgets/shared/index.dart';
 import 'package:restaurant_payments_ui/constants/index.dart';
+import 'package:restaurant_payments_ui/widgets/templates/form-template.widget.dart';
 
 class MMSSignupInputNames {
   static String email = 'email';
@@ -49,7 +50,6 @@ class _MMSSignupScreenState extends State<MMSSignupScreen> {
       isLoading: _isLoading,
       children: <Widget>[
         Container(
-          margin: EdgeInsets.only(top: 24),
           child: MMSTextField(
             label: 'email address',
             errorText: _form.errorMessages[MMSSignupInputNames.email],

@@ -13,12 +13,12 @@ class UserService {
   static UserModel _activeUser;
   static UserModel getActiveUser() { return _activeUser; }
 
-  static Future<bool> loadStoredUser() async {
+  static Future<String> getStoredUserId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final userId = prefs.getString(LocalStorage.userId);
+    return prefs.getString(LocalStorage.userId);
+  }
 
-    if (userId == null) { return false; }
-    
+  static Future<bool> loginUserWithStoredId(String userId) async {
     return _getUserById(userId).then((user) {
       if (user == null) { return false; }
 
@@ -33,6 +33,19 @@ class UserService {
 
     final response = await http.post(formatRoute([ApiRoutes.baseUrl, ApiRoutes.users]), body: userData);
     if (response.statusCode != 201) { throw Exception('Failed to add User'); }
+
+    UserModel insertedUser = UserModel.fromJson(json.decode(response.body));
+    _activeUser = insertedUser;
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(LocalStorage.userId, insertedUser.id);
+  }
+
+  static Future loginUser(String email, String password) async {
+    final userData = { 'email': email, 'password': password };
+
+    final response = await http.post(formatRoute([ApiRoutes.baseUrl, ApiRoutes.users, ApiRoutes.login]), body: userData);
+    if (response.statusCode != 200) { throw Exception('Login attempt failed'); }
 
     UserModel insertedUser = UserModel.fromJson(json.decode(response.body));
     _activeUser = insertedUser;

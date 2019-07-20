@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../models/index.dart';
 import '../../services/index.dart';
-import '../shared/index.dart';
+import '../shared/full-page-spinner.widget.dart';
 
 import '../table/table.widget.dart';
 

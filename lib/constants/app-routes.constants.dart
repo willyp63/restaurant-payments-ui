@@ -5,4 +5,5 @@ class AppRoutes {
   static String signUp = '/sign-up';
   static String welcome = '/';
   static String login = '/login';
+  static String autoLogin = '/auto-login';
 }

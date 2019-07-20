@@ -4,6 +4,7 @@ import './theme/app-theme.dart';
 
 import './constants/index.dart';
 
+import 'widgets/screens/auto-login-screen/auto-login-screen.widget.dart';
 import 'widgets/screens/welcome-screen/welcome-screen.widget.dart';
 import 'widgets/screens/login-screen/login-screen.widget.dart';
 import 'widgets/screens/signup-screen/signup-screen.widget.dart';
@@ -19,8 +20,9 @@ class MyApp extends StatelessWidget {
       title: 'Mimos',
       theme: appTheme,
       debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.welcome,
+      initialRoute: AppRoutes.autoLogin,
       routes: {
+        AppRoutes.autoLogin: (_) => MMSAutoLoginScreen(),
         AppRoutes.welcome: (_) => MMSWelcomeScreen(),
         AppRoutes.signUp: (_) => MMSSignupScreen(),
         AppRoutes.login: (_) => MMSLoginScreen(),
