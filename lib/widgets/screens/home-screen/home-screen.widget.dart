@@ -1,9 +1,25 @@
 import 'package:flutter/material.dart';
 
-import '../../../theme/colors.dart';
-import '../../../constants/app-routes.constants.dart';
+import 'package:restaurant_payments_ui/theme/colors.dart';
 
-class MMSHomeScreen extends StatelessWidget {
+import './home/home.widget.dart';
+import './account/account.widget.dart';
+
+class MMSHomeScreen extends StatefulWidget {
+  @override
+  _MMSHomeScreenState createState() => _MMSHomeScreenState();
+}
+
+class _MMSHomeScreenState extends State<MMSHomeScreen> {
+  int _currentIndex = 0;
+  final List<Widget> _children = [
+    MMSHome(),
+    Text('Recent'),
+    Text('Receipt'),
+    Text('Scan'),
+    MMSAccount(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,35 +40,7 @@ class MMSHomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.only(top: 36),
-              child: Text('Scan code', style: Theme.of(context).textTheme.headline),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 16),
-              child: InkWell(
-                child: Container(
-                  width: 120,
-                  height: 120,
-                  decoration: BoxDecoration(
-                    color: MMSColors.white,
-                    border: Border.all(color: MMSColors.gray, width: 1, style: BorderStyle.solid),
-                  ),
-                  child: Icon(Icons.camera_alt, size: 80, color: MMSColors.teal),
-                ),
-                onTap: () {
-                  Navigator.of(context).pushNamed(AppRoutes.scanCode);
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
+      body: _children[_currentIndex],
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           border: Border(top: BorderSide(color: MMSColors.warmGray, style: BorderStyle.solid, width: 1)),
@@ -62,9 +50,11 @@ class MMSHomeScreen extends StatelessWidget {
           backgroundColor: MMSColors.lightGray,
           unselectedItemColor: MMSColors.darkGray,
           elevation: 0,
-          currentIndex: 0,
+          currentIndex: _currentIndex,
           onTap: (selectedIdx) {
-            // TODO
+            setState(() {
+              _currentIndex = selectedIdx;
+            });
           },
           items: [
             BottomNavigationBarItem(
