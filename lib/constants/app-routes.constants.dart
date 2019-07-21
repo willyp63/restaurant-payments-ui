@@ -1,4 +1,5 @@
 class AppRoutes {
+  static String table = '/table';
   static String home = '/home';
   static String pastTables = '/past-tables';
   static String scanCode = '/scan-code';

@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:fast_qr_reader_view/fast_qr_reader_view.dart';
+import 'package:restaurant_payments_ui/constants/app-routes.constants.dart';
 
 import 'package:restaurant_payments_ui/services/index.dart';
 import 'package:restaurant_payments_ui/utils/index.dart';
 import 'package:restaurant_payments_ui/theme/colors.dart';
+import 'package:restaurant_payments_ui/widgets/screens/table-screen/table-screen.widget.dart';
 
 class MMSScanCodeScreen extends StatefulWidget {
   @override
@@ -179,6 +181,6 @@ class _MMSScanCodeScreenState extends State<MMSScanCodeScreen>
 
     // TODO: test that user was added successfully before navigating
 
-    // TODO: navigate to table screen
+    Navigator.of(context).pushReplacementNamed(AppRoutes.table, arguments: MMSTableScreenArguments(tableId: tableId));
   }
 }

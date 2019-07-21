@@ -26,7 +26,7 @@ class _MMSAccountScreenState extends State<MMSAccount> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Container(
-                margin: EdgeInsets.only(top: 24),
+                margin: EdgeInsets.only(top: 36),
                 width: 110,
                 height: 110,
                 decoration: BoxDecoration(
@@ -44,7 +44,7 @@ class _MMSAccountScreenState extends State<MMSAccount> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(top: 12, bottom: 12),
+                margin: EdgeInsets.only(top: 12, bottom: 24),
                 child: Text(
                   formatUser(user),
                   style: Theme.of(context).textTheme.display2,
@@ -65,34 +65,35 @@ class _MMSAccountScreenState extends State<MMSAccount> {
               children: <Widget>[
                 MMSListTile(
                   title: 'Personal',
-                  subtitle: 'Email, phone number, preferences',
-                ),
-                MMSDivider(),
-                MMSListTile(
-                  title: 'Location',
-                  subtitle: 'Choose your location',
+                  subtitle: 'Name, email, phone number',
+                  onTap: _goToPersonal(),
                 ),
                 MMSDivider(),
                 MMSListTile(
                   title: 'Payment',
                   subtitle: 'Set up payment methods',
-                ),
-                MMSDivider(),
-                MMSListTile(
-                  title: 'Notifications',
-                  subtitle: 'Configure notifications',
+                  onTap: _goToPayments(),
                 ),
                 MMSDivider(),
                 MMSListTile(
                   title: 'Logout',
                   onTap: _signOutUser,
                 ),
+                MMSDivider(),
               ],
             ),
           )
         ],
       ),
     );
+  }
+
+  _goToPersonal() {
+    // TODO
+  }
+
+  _goToPayments() {
+    // TODO
   }
 
   _signOutUser() {

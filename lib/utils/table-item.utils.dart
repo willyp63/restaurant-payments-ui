@@ -5,7 +5,6 @@ import '../models/index.dart';
 
 final currencyFormatter = NumberFormat.currency(symbol: '\$');
 final percentFormatter = NumberFormat.percentPattern();
-final dateFormatter = DateFormat.yMd().add_jm();
 
 String formatTableItem(TableItemModel item) {
   return formatTableItemName(item) + ' (' + formatTableItemPrice(item) + ')';

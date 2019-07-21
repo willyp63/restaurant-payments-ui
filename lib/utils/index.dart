@@ -1,3 +1,4 @@
+export './date.utils.dart';
 export './route.utils.dart';
 export './string.utils.dart';
 export './table-event.utils.dart';

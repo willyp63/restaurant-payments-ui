@@ -9,7 +9,7 @@ final appTextTheme = TextTheme(
   display1: TextStyle(fontSize: 24.0, fontWeight: FontWeight.w500, color: MMSColors.black),
   headline: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500, color: MMSColors.black),
   title: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500, color: MMSColors.black),
-  subhead: TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500, color: MMSColors.black),
+  subhead: TextStyle(fontSize: 13.0, fontWeight: FontWeight.w500, color: MMSColors.black),
   body2: TextStyle(fontSize: 14.0, color: MMSColors.black),
   body1: TextStyle(fontSize: 12.0, color: MMSColors.black),
   button: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w500, color: MMSColors.black),
