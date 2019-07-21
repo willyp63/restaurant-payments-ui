@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:restaurant_payments_ui/constants/app-routes.constants.dart';
 import 'package:restaurant_payments_ui/models/table.model.dart';
 import 'package:restaurant_payments_ui/services/index.dart';
 import 'package:restaurant_payments_ui/theme/colors.dart';
@@ -16,6 +15,7 @@ class MMSRecent extends StatefulWidget {
 
 class _MMSRecentState extends State<MMSRecent> {
   Future<List<TableModel>> _recentTables;
+  bool _sortDescending = true;
 
   @override
   void initState() {
@@ -26,17 +26,34 @@ class _MMSRecentState extends State<MMSRecent> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          MMSDivider(),
-          Expanded(
-            child: _buildPastTablesList(context),
-          )
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              FlatButton(
+                child: Row(
+                  children: <Widget>[
+                    Text('Sort by date', style: Theme.of(context).textTheme.title),
+                    Container(
+                      margin: EdgeInsets.only(left: 4),
+                      child: Icon(_sortDescending ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up),
+                    ),
+                  ],
+                ),
+                onPressed: _onSortByDatePressed,
+              ),
+            ],
+          ),
+        ),
+        MMSDivider(),
+        Expanded(
+          child: _buildPastTablesList(context),
+        )
+      ],
     );
   }
 
@@ -58,6 +75,12 @@ class _MMSRecentState extends State<MMSRecent> {
                     .merge(TextStyle(color: MMSColors.gray)),
               ),
             );
+          }
+
+          if (_sortDescending) {
+            tables.sort((a, b) => b.joinedAt.compareTo(a.joinedAt));
+          } else {
+            tables.sort((a, b) => a.joinedAt.compareTo(b.joinedAt));
           }
 
           return ListView(
@@ -83,7 +106,9 @@ class _MMSRecentState extends State<MMSRecent> {
     );
   }
 
-  _onViewAllRecentPressed() {
-    // TODO
+  _onSortByDatePressed() {
+    setState(() {
+      _sortDescending = !_sortDescending;
+    });
   }
 }

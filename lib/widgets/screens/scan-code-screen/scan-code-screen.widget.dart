@@ -133,14 +133,7 @@ class _MMSScanCodeScreenState extends State<MMSScanCodeScreen>
   /// Display the preview from the camera (or a message if the preview is not available).
   Widget _cameraPreviewWidget(BuildContext context) {
     if (controller == null || !controller.value.isInitialized) {
-      return Text(
-        'No camera selected',
-        style: TextStyle(
-          color: MMSColors.white,
-          fontSize: Theme.of(context).textTheme.headline.fontSize,
-          fontWeight: FontWeight.w900,
-        ),
-      );
+      return Container(color: MMSColors.black);
     } else {
       return AspectRatio(
         aspectRatio: controller.value.aspectRatio,

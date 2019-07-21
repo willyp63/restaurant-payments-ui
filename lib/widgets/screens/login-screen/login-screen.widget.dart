@@ -74,7 +74,7 @@ class _MMSLoginScreenState extends State<MMSLoginScreen> {
           ),
         ),
         Container(
-          margin: EdgeInsets.only(top: 24),
+          margin: EdgeInsets.only(top: 20),
           child: MMSButton(
             type: MMSButtonType.Link,
             text: 'Forgot password?',
@@ -82,7 +82,7 @@ class _MMSLoginScreenState extends State<MMSLoginScreen> {
           ),
         ),
         Container(
-          margin: EdgeInsets.only(top: 16),
+          margin: EdgeInsets.only(top: 12),
           child: MMSButton(
             type: MMSButtonType.Link,
             text: 'Create an Account',

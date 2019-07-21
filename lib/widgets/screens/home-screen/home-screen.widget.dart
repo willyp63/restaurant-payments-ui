@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 import 'package:restaurant_payments_ui/theme/colors.dart';
+import 'package:restaurant_payments_ui/constants/index.dart';
 
 import './home/home.widget.dart';
 import './account/account.widget.dart';
+import './recent/recent.widget.dart';
 
 class MMSHomeScreen extends StatefulWidget {
   @override
@@ -12,16 +14,16 @@ class MMSHomeScreen extends StatefulWidget {
 
 class _MMSHomeScreenState extends State<MMSHomeScreen> {
   int _currentIndex = 0;
-  final List<Widget> _children = [
-    MMSHome(),
-    Text('Recent'),
-    Text('Receipt'),
-    Text('Scan'),
-    MMSAccount(),
-  ];
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> children = [
+      MMSHome(onRecentTablesPressed: _onRecentTablesPressed),
+      MMSRecent(),
+      Container(), // clicking this route opens the scanner
+      MMSAccount(),
+    ];
+
     return Scaffold(
       backgroundColor: MMSColors.babyPowder,
       appBar: AppBar(
@@ -40,7 +42,7 @@ class _MMSHomeScreenState extends State<MMSHomeScreen> {
           ),
         ],
       ),
-      body: _children[_currentIndex],
+      body: children[_currentIndex],
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           border: Border(top: BorderSide(color: MMSColors.warmGray, style: BorderStyle.solid, width: 1)),
@@ -53,7 +55,12 @@ class _MMSHomeScreenState extends State<MMSHomeScreen> {
           currentIndex: _currentIndex,
           onTap: (selectedIdx) {
             setState(() {
-              _currentIndex = selectedIdx;
+              if (selectedIdx == 2) {
+                // open scanner for route labled scanner
+                Navigator.of(context).pushNamed(AppRoutes.scanCode);
+              } else {
+                _currentIndex = selectedIdx;
+              }
             });
           },
           items: [
@@ -64,10 +71,6 @@ class _MMSHomeScreenState extends State<MMSHomeScreen> {
             BottomNavigationBarItem(
               icon: new Icon(Icons.room_service),
               title: new Text('Recent'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.receipt),
-              title: Text('Receipt'),
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.camera_alt),
@@ -81,5 +84,12 @@ class _MMSHomeScreenState extends State<MMSHomeScreen> {
         ),
       ),
     );
+  }
+
+  _onRecentTablesPressed() {
+    setState(() {
+      // open recent tables route
+      _currentIndex = 1;
+    });
   }
 }

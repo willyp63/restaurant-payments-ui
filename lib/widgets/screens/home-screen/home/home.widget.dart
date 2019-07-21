@@ -10,6 +10,10 @@ import 'package:restaurant_payments_ui/widgets/shared/divider.widget.dart';
 import 'package:restaurant_payments_ui/widgets/shared/index.dart';
 
 class MMSHome extends StatefulWidget {
+  final void Function() onRecentTablesPressed;
+
+  MMSHome({this.onRecentTablesPressed});
+
   @override
   _MMSHomeState createState() => _MMSHomeState();
 }
@@ -73,7 +77,7 @@ class _MMSHomeState extends State<MMSHome> {
               MMSButton(
                 type: MMSButtonType.Link,
                 text: 'View all',
-                onPressed: _onViewAllRecentPressed,
+                onPressed: widget.onRecentTablesPressed,
               ),
             ],
           ),
@@ -127,9 +131,5 @@ class _MMSHomeState extends State<MMSHome> {
         return MMSSpinner();
       },
     );
-  }
-
-  _onViewAllRecentPressed() {
-    // TODO
   }
 }

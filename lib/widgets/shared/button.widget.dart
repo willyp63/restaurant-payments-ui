@@ -15,7 +15,7 @@ class MMSButton extends StatelessWidget {
   final void Function() onPressed;
 
   final padding = const EdgeInsets.symmetric(horizontal: 24, vertical: 12);
-  final noPadding = const EdgeInsets.all(0);
+  final linkPadding = const EdgeInsets.symmetric(vertical: 4);
   final shape = RoundedRectangleBorder(borderRadius: BorderRadius.circular(0));
 
   MMSButton({this.type = MMSButtonType.Primary, this.text, this.onPressed});
@@ -24,7 +24,7 @@ class MMSButton extends StatelessWidget {
   Widget build(context) {
     final primaryTextStyle = Theme.of(context).textTheme.button.merge(TextStyle(color: Theme.of(context).primaryColor));
     final whiteTextStyle = Theme.of(context).textTheme.button.merge(TextStyle(color: MMSColors.white));
-    final linkTextStyle = Theme.of(context).textTheme.subhead.merge(TextStyle(color: Theme.of(context).primaryColor));
+    final linkTextStyle = Theme.of(context).textTheme.title.merge(TextStyle(color: Theme.of(context).primaryColor));
 
     switch (type) {
       case MMSButtonType.Primary:
@@ -55,7 +55,10 @@ class MMSButton extends StatelessWidget {
         );
       case MMSButtonType.Link:
         return InkWell(
-          child: Text(text, style: linkTextStyle),
+          child: Container(
+            padding: linkPadding,
+            child: Text(text, style: linkTextStyle),
+          ),
           onTap: onPressed,
         );
     }

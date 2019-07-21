@@ -109,7 +109,7 @@ class _MMSSignupScreenState extends State<MMSSignupScreen> {
           ),
         ),
         Container(
-          margin: EdgeInsets.only(top: 24),
+          margin: EdgeInsets.only(top: 20),
           child: MMSButton(
             type: MMSButtonType.Link,
             text: 'Sign in',
