@@ -11,92 +11,89 @@ import 'package:restaurant_payments_ui/widgets/shared/index.dart';
 
 class MMSHome extends StatefulWidget {
   @override
-  _MMSHomeScreenState createState() => _MMSHomeScreenState();
+  _MMSHomeState createState() => _MMSHomeState();
 }
 
-class _MMSHomeScreenState extends State<MMSHome> {
-  Future<List<TableModel>> _tables;
+class _MMSHomeState extends State<MMSHome> {
+  Future<List<TableModel>> _recentTables;
 
   @override
   void initState() {
     super.initState();
 
-    _tables = UserService.getPastTables();
+    _recentTables = UserService.getPastTables();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(top: 36),
-                child: Text('Scan code',
-                    style: Theme.of(context).textTheme.headline),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 16),
-                child: InkWell(
-                  child: Container(
-                    width: 120,
-                    height: 120,
-                    decoration: BoxDecoration(
-                      color: MMSColors.white,
-                      border: Border.all(
-                          color: MMSColors.gray,
-                          width: 1,
-                          style: BorderStyle.solid),
-                    ),
-                    child:
-                        Icon(Icons.camera_alt, size: 80, color: MMSColors.teal),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(top: 36),
+              child: Text('Scan code',
+                  style: Theme.of(context).textTheme.headline),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 16),
+              child: InkWell(
+                child: Container(
+                  width: 120,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    color: MMSColors.white,
+                    border: Border.all(
+                        color: MMSColors.gray,
+                        width: 1,
+                        style: BorderStyle.solid),
                   ),
-                  onTap: () {
-                    Navigator.of(context).pushNamed(AppRoutes.scanCode);
-                  },
+                  child:
+                      Icon(Icons.camera_alt, size: 80, color: MMSColors.teal),
                 ),
+                onTap: () {
+                  Navigator.of(context).pushNamed(AppRoutes.scanCode);
+                },
+              ),
+            ),
+          ],
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 48),
+          padding: EdgeInsets.all(12),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                'Recent tables',
+                style: Theme.of(context).textTheme.headline,
+              ),
+              MMSButton(
+                type: MMSButtonType.Link,
+                text: 'View all',
+                onPressed: _onViewAllRecentPressed,
               ),
             ],
           ),
-          Container(
-            margin: EdgeInsets.only(top: 48),
-            padding: EdgeInsets.all(12),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  'Recent tables',
-                  style: Theme.of(context).textTheme.headline,
-                ),
-                MMSButton(
-                  type: MMSButtonType.Link,
-                  text: 'View all',
-                  onPressed: _onViewAllRecentPressed,
-                ),
-              ],
-            ),
-          ),
-          MMSDivider(),
-          Expanded(
-            child: _buildPastTablesList(context),
-          )
-        ],
-      ),
+        ),
+        MMSDivider(),
+        Expanded(
+          child: _buildPastTablesList(context),
+        )
+      ],
     );
   }
 
   Widget _buildPastTablesList(BuildContext context) {
     return FutureBuilder(
-      future: _tables,
+      future: _recentTables,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          final List<TableModel> tables = snapshot.data;
+          final List<TableModel> recentTables = snapshot.data;
 
-          if (tables.length == 0) {
+          if (recentTables.length == 0) {
             return Container(
               padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               child: Text(
@@ -110,7 +107,7 @@ class _MMSHomeScreenState extends State<MMSHome> {
           }
 
           return ListView(
-            children: tables
+            children: recentTables
                 .map((table) {
                   return [
                     MMSListTile(

@@ -17,74 +17,71 @@ class _MMSAccountScreenState extends State<MMSAccount> {
   Widget build(BuildContext context) {
     final user = UserService.getActiveUser();
 
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(top: 36),
-                width: 110,
-                height: 110,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(60),
-                  color: MMSColors.teal,
-                ),
-                child: Center(
-                  child: Text(
-                    formatUserInitials(user),
-                    style: Theme.of(context)
-                        .textTheme
-                        .display3
-                        .merge(TextStyle(color: MMSColors.white)),
-                  ),
-                ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(top: 36),
+              width: 110,
+              height: 110,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(60),
+                color: MMSColors.teal,
               ),
-              Container(
-                margin: EdgeInsets.only(top: 12, bottom: 24),
+              child: Center(
                 child: Text(
-                  formatUser(user),
-                  style: Theme.of(context).textTheme.display2,
+                  formatUserInitials(user),
+                  style: Theme.of(context)
+                      .textTheme
+                      .display3
+                      .merge(TextStyle(color: MMSColors.white)),
                 ),
               ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 12, bottom: 24),
+              child: Text(
+                formatUser(user),
+                style: Theme.of(context).textTheme.display2,
+              ),
+            ),
+          ],
+        ),
+        Container(
+          margin: EdgeInsets.all(12),
+          child: Text(
+            'View & edit your account',
+            style: Theme.of(context).textTheme.headline,
+          ),
+        ),
+        MMSDivider(),
+        Expanded(
+          child: ListView(
+            children: <Widget>[
+              MMSListTile(
+                title: 'Personal',
+                subtitle: 'Name, email, phone number',
+                onTap: _goToPersonal(),
+              ),
+              MMSDivider(),
+              MMSListTile(
+                title: 'Payment',
+                subtitle: 'Set up payment methods',
+                onTap: _goToPayments(),
+              ),
+              MMSDivider(),
+              MMSListTile(
+                title: 'Logout',
+                onTap: _signOutUser,
+              ),
+              MMSDivider(),
             ],
           ),
-          Container(
-            margin: EdgeInsets.all(12),
-            child: Text(
-              'View & edit your account',
-              style: Theme.of(context).textTheme.headline,
-            ),
-          ),
-          MMSDivider(),
-          Expanded(
-            child: ListView(
-              children: <Widget>[
-                MMSListTile(
-                  title: 'Personal',
-                  subtitle: 'Name, email, phone number',
-                  onTap: _goToPersonal(),
-                ),
-                MMSDivider(),
-                MMSListTile(
-                  title: 'Payment',
-                  subtitle: 'Set up payment methods',
-                  onTap: _goToPayments(),
-                ),
-                MMSDivider(),
-                MMSListTile(
-                  title: 'Logout',
-                  onTap: _signOutUser,
-                ),
-                MMSDivider(),
-              ],
-            ),
-          )
-        ],
-      ),
+        )
+      ],
     );
   }
 
@@ -98,7 +95,8 @@ class _MMSAccountScreenState extends State<MMSAccount> {
 
   _signOutUser() {
     UserService.signOutUser().then((_) {
-      Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.welcome, (route) => false);
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil(AppRoutes.welcome, (route) => false);
     });
   }
 }
