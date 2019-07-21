@@ -32,8 +32,18 @@ class MyApp extends StatelessWidget {
         AppRoutes.accountPayments: (_) => MMSAccountPaymentsScreen(),
         AppRoutes.accountPersonal: (_) => MMSAccountPersonalScreen(),
         AppRoutes.scanCode: (_) => MMSScanCodeScreen(),
-        AppRoutes.table: (_) => MMSTableScreen(),
       },
+      onGenerateRoute: _onGenerateRoute,
     );
+  }
+
+  MaterialPageRoute _onGenerateRoute(RouteSettings settings) {
+    // table route
+    if (settings.name == AppRoutes.table) {
+      final MMSTableScreenArguments args = settings.arguments;
+      return MaterialPageRoute(
+        builder: (context) => MMSTableScreen(tableId: args.tableId),
+      );
+    }
   }
 }

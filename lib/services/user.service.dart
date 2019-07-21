@@ -9,7 +9,13 @@ import '../constants/index.dart';
 import '../services/websocket.service.dart';
 import '../services/table-item.service.dart';
 
+class UserServiceCacheKeys {
+  static String pastTable = 'past-tables';
+}
+
 class UserService {
+  static Map<String, dynamic> _cache = {};
+
   static UserModel _activeUser;
   static UserModel getActiveUser() { return _activeUser; }
 
@@ -73,13 +79,23 @@ class UserService {
     WebSocketService.emit(SocketEvents.leaveTable, tableLeave);
   }
 
-  static Future<List<TableModel>> getPastTables() async {
+  static Future<List<TableModel>> getPastTables({bool ignoreCache = false}) async {
     if (_activeUser == null) { throw Exception('No active User'); }
+
+    // check cache
+    if (!ignoreCache && _cache[UserServiceCacheKeys.pastTable] != null) {
+      return _cache[UserServiceCacheKeys.pastTable];
+    }
     
     final response = await http.get(formatRoute([ApiRoutes.baseUrl, ApiRoutes.users, _activeUser.id, ApiRoutes.tables]));
     if (response.statusCode != 200) { throw Exception('Failed to get User\'s Tables'); }
 
-    return (json.decode(response.body) as List).map((tableData) => TableModel.fromJson(tableData)).toList();
+    List<TableModel> tables = (json.decode(response.body) as List).map((tableData) => TableModel.fromJson(tableData)).toList();
+
+    // update cache
+    _cache[UserServiceCacheKeys.pastTable] =  tables;
+
+    return tables;
   }
 
   static Observable<void> onUserJoinedTable() {

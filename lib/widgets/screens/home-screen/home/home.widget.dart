@@ -6,6 +6,7 @@ import 'package:restaurant_payments_ui/models/table.model.dart';
 import 'package:restaurant_payments_ui/services/index.dart';
 import 'package:restaurant_payments_ui/theme/colors.dart';
 import 'package:restaurant_payments_ui/utils/date.utils.dart';
+import 'package:restaurant_payments_ui/widgets/screens/table-screen/table-screen.widget.dart';
 import 'package:restaurant_payments_ui/widgets/shared/divider.widget.dart';
 import 'package:restaurant_payments_ui/widgets/shared/index.dart';
 
@@ -66,28 +67,15 @@ class _MMSHomeState extends State<MMSHome> {
         ),
         Container(
           margin: EdgeInsets.only(top: 48),
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                'Recent tables',
-                style: Theme.of(context).textTheme.headline,
-              ),
-              MMSButton(
-                type: MMSButtonType.Link,
-                text: 'View all',
-                onPressed: widget.onRecentTablesPressed,
-              ),
-            ],
+          child: MMSListHeader(
+            title: 'Recent tables',
+            actionName: 'View all',
+            onAction: widget.onRecentTablesPressed,
           ),
         ),
         MMSDivider(),
         Expanded(
-          child: Container(
-            color: MMSColors.white,
-            child: _buildPastTablesList(context),
-          ),
+          child: _buildPastTablesList(context),
         )
       ],
     );
@@ -120,6 +108,9 @@ class _MMSHomeState extends State<MMSHome> {
                     MMSListTile(
                       title: table.name,
                       subtitle: 'Date Visted:  ' + formatDate(table.joinedAt),
+                      onTap: () {
+                        Navigator.of(context).pushNamed(AppRoutes.table, arguments: MMSTableScreenArguments(tableId: table.id));
+                      },
                     ),
                     MMSDivider(),
                   ];

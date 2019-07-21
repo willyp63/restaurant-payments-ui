@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import 'package:restaurant_payments_ui/constants/index.dart';
 import 'package:restaurant_payments_ui/models/table.model.dart';
 import 'package:restaurant_payments_ui/services/index.dart';
 import 'package:restaurant_payments_ui/theme/colors.dart';
 import 'package:restaurant_payments_ui/utils/date.utils.dart';
+import 'package:restaurant_payments_ui/widgets/screens/table-screen/table-screen.widget.dart';
 import 'package:restaurant_payments_ui/widgets/shared/divider.widget.dart';
 import 'package:restaurant_payments_ui/widgets/shared/index.dart';
 
@@ -93,6 +95,9 @@ class _MMSRecentState extends State<MMSRecent> {
                     MMSListTile(
                       title: table.name,
                       subtitle: 'Date Visted:  ' + formatDate(table.joinedAt),
+                      onTap: () {
+                        Navigator.of(context).pushNamed(AppRoutes.table, arguments: MMSTableScreenArguments(tableId: table.id));
+                      },
                     ),
                     MMSDivider(),
                   ];

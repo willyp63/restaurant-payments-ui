@@ -30,6 +30,7 @@ dependencies:
   intl: ^0.15.8
   web_socket_channel: ^1.0.12
   shared_preferences: ^0.5.2
+  sticky_headers: ^0.1.8
 
 dev_dependencies:
   flutter_test:

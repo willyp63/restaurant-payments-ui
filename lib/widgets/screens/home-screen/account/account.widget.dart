@@ -50,38 +50,29 @@ class _MMSAccountScreenState extends State<MMSAccount> {
             ),
           ],
         ),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-          child: Text(
-            'View & edit your account',
-            style: Theme.of(context).textTheme.headline,
-          ),
-        ),
+        MMSListHeader(title: 'View & edit your account'),
         MMSDivider(),
         Expanded(
-          child: Container(
-            color: MMSColors.white,
-            child: ListView(
-              children: <Widget>[
-                MMSListTile(
-                  title: 'Personal',
-                  subtitle: 'Name, email, phone number',
-                  onTap: _goToPersonal,
-                ),
-                MMSDivider(),
-                MMSListTile(
-                  title: 'Payment',
-                  subtitle: 'Set up payment methods',
-                  onTap: _goToPayments,
-                ),
-                MMSDivider(),
-                MMSListTile(
-                  title: 'Logout',
-                  onTap: _signOutUser,
-                ),
-                MMSDivider(),
-              ],
-            ),
+          child: ListView(
+            children: <Widget>[
+              MMSListTile(
+                title: 'Personal',
+                subtitle: 'Name, email, phone number',
+                onTap: _goToPersonal,
+              ),
+              MMSDivider(),
+              MMSListTile(
+                title: 'Payment',
+                subtitle: 'Set up payment methods',
+                onTap: _goToPayments,
+              ),
+              MMSDivider(),
+              MMSListTile(
+                title: 'Logout',
+                onTap: _signOutUser,
+              ),
+              MMSDivider(),
+            ],
           ),
         )
       ],
