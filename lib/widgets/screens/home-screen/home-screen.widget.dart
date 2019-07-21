@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:restaurant_payments_ui/theme/colors.dart';
 import 'package:restaurant_payments_ui/constants/index.dart';
+import 'package:restaurant_payments_ui/widgets/shared/app-bar.widget.dart';
 
 import './home/home.widget.dart';
 import './account/account.widget.dart';
@@ -26,22 +27,7 @@ class _MMSHomeScreenState extends State<MMSHomeScreen> {
 
     return Scaffold(
       backgroundColor: MMSColors.babyPowder,
-      appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        title: Container(
-          width: 100,
-          child: Image.asset('images/mimos_logo_white.png'),
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search, color: MMSColors.white),
-            onPressed: () {
-              // TODO: search for something...
-            },
-          ),
-        ],
-      ),
+      appBar: MMSAppBar(),
       body: children[_currentIndex],
       bottomNavigationBar: Container(
         decoration: BoxDecoration(

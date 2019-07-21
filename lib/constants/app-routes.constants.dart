@@ -7,4 +7,7 @@ class AppRoutes {
   static String welcome = '/';
   static String login = '/login';
   static String autoLogin = '/auto-login';
+
+  static String accountPersonal = '/account/personal';
+  static String accountPayments = '/account/payments';
 }

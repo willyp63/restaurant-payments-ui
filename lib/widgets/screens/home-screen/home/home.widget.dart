@@ -66,7 +66,7 @@ class _MMSHomeState extends State<MMSHome> {
         ),
         Container(
           margin: EdgeInsets.only(top: 48),
-          padding: EdgeInsets.all(12),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
@@ -84,7 +84,10 @@ class _MMSHomeState extends State<MMSHome> {
         ),
         MMSDivider(),
         Expanded(
-          child: _buildPastTablesList(context),
+          child: Container(
+            color: MMSColors.white,
+            child: _buildPastTablesList(context),
+          ),
         )
       ],
     );

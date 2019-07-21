@@ -51,7 +51,10 @@ class _MMSRecentState extends State<MMSRecent> {
         ),
         MMSDivider(),
         Expanded(
-          child: _buildPastTablesList(context),
+          child: Container(
+            color: MMSColors.white,
+            child: _buildPastTablesList(context),
+          ),
         )
       ],
     );

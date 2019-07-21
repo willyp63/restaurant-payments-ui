@@ -51,7 +51,7 @@ class _MMSAccountScreenState extends State<MMSAccount> {
           ],
         ),
         Container(
-          margin: EdgeInsets.all(12),
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           child: Text(
             'View & edit your account',
             style: Theme.of(context).textTheme.headline,
@@ -59,26 +59,29 @@ class _MMSAccountScreenState extends State<MMSAccount> {
         ),
         MMSDivider(),
         Expanded(
-          child: ListView(
-            children: <Widget>[
-              MMSListTile(
-                title: 'Personal',
-                subtitle: 'Name, email, phone number',
-                onTap: _goToPersonal(),
-              ),
-              MMSDivider(),
-              MMSListTile(
-                title: 'Payment',
-                subtitle: 'Set up payment methods',
-                onTap: _goToPayments(),
-              ),
-              MMSDivider(),
-              MMSListTile(
-                title: 'Logout',
-                onTap: _signOutUser,
-              ),
-              MMSDivider(),
-            ],
+          child: Container(
+            color: MMSColors.white,
+            child: ListView(
+              children: <Widget>[
+                MMSListTile(
+                  title: 'Personal',
+                  subtitle: 'Name, email, phone number',
+                  onTap: _goToPersonal,
+                ),
+                MMSDivider(),
+                MMSListTile(
+                  title: 'Payment',
+                  subtitle: 'Set up payment methods',
+                  onTap: _goToPayments,
+                ),
+                MMSDivider(),
+                MMSListTile(
+                  title: 'Logout',
+                  onTap: _signOutUser,
+                ),
+                MMSDivider(),
+              ],
+            ),
           ),
         )
       ],
@@ -86,11 +89,11 @@ class _MMSAccountScreenState extends State<MMSAccount> {
   }
 
   _goToPersonal() {
-    // TODO
+    Navigator.of(context).pushNamed(AppRoutes.accountPersonal);
   }
 
   _goToPayments() {
-    // TODO
+    Navigator.of(context).pushNamed(AppRoutes.accountPayments);
   }
 
   _signOutUser() {

@@ -1,3 +1,4 @@
+export './app-bar.widget.dart';
 export './button.widget.dart';
 export './divider.widget.dart';
 export './list-tile.widget.dart';

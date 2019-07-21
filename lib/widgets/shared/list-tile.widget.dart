@@ -12,7 +12,7 @@ class MMSListTile extends StatelessWidget {
   @override
   Widget build(context) {
     return ListTile(
-      contentPadding: EdgeInsets.symmetric(horizontal: 24),
+      contentPadding: EdgeInsets.symmetric(horizontal: 30),
       title: title != null ? Text(title, style: Theme.of(context).textTheme.title.merge(TextStyle(color: MMSColors.teal))) : null,
       subtitle: subtitle != null ? Text(subtitle, style: Theme.of(context).textTheme.subhead.merge(TextStyle(color: MMSColors.gray))) : null,
       onTap: onTap,
