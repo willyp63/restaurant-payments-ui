@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:restaurant_payments_ui/models/index.dart';
-import 'package:restaurant_payments_ui/services/index.dart';
+import 'package:mimos/models/index.dart';
+import 'package:mimos/services/index.dart';
 
-import 'package:restaurant_payments_ui/theme/colors.dart';
-import 'package:restaurant_payments_ui/utils/index.dart';
-import 'package:restaurant_payments_ui/utils/table-item.utils.dart';
-import 'package:restaurant_payments_ui/widgets/shared/index.dart';
+import 'package:mimos/theme/colors.dart';
+import 'package:mimos/utils/index.dart';
+import 'package:mimos/utils/table-item.utils.dart';
+import 'package:mimos/widgets/shared/index.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:sticky_headers/sticky_headers.dart';
 

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:restaurant_payments_ui/constants/index.dart';
-import 'package:restaurant_payments_ui/models/table.model.dart';
-import 'package:restaurant_payments_ui/services/index.dart';
-import 'package:restaurant_payments_ui/theme/colors.dart';
-import 'package:restaurant_payments_ui/utils/date.utils.dart';
-import 'package:restaurant_payments_ui/widgets/screens/table-screen/table-screen.widget.dart';
-import 'package:restaurant_payments_ui/widgets/shared/divider.widget.dart';
-import 'package:restaurant_payments_ui/widgets/shared/index.dart';
+import 'package:mimos/constants/index.dart';
+import 'package:mimos/models/table.model.dart';
+import 'package:mimos/services/index.dart';
+import 'package:mimos/theme/colors.dart';
+import 'package:mimos/utils/date.utils.dart';
+import 'package:mimos/widgets/screens/table-screen/table-screen.widget.dart';
+import 'package:mimos/widgets/shared/divider.widget.dart';
+import 'package:mimos/widgets/shared/index.dart';
 
 class MMSRecent extends StatefulWidget {
   @override

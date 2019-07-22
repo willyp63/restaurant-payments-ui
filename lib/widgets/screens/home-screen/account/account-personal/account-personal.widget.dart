@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:restaurant_payments_ui/widgets/shared/index.dart';
+import 'package:mimos/widgets/shared/index.dart';
 
 class MMSAccountPersonalScreen extends StatelessWidget {
   @override

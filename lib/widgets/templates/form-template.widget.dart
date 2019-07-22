@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:restaurant_payments_ui/theme/colors.dart';
-import 'package:restaurant_payments_ui/widgets/shared/index.dart';
+import 'package:mimos/theme/colors.dart';
+import 'package:mimos/widgets/shared/index.dart';
 
 import './fullscreen-image-template.widget.dart';
 

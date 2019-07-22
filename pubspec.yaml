@@ -1,5 +1,5 @@
-name: restaurant_payments_ui
-description: A new Flutter project.
+name: mimos
+description: A way to pay on your phone at restaraunts
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -35,6 +35,12 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.7.2
+  
+flutter_icons:
+  android: "launcher_icon" 
+  ios: true
+  image_path: "images/launcher-icons/mimos-launcher-icon.png"
 
 
 # For information on the generic Dart part of this file, see the

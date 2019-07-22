@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:restaurant_payments_ui/theme/colors.dart';
+import 'package:mimos/theme/colors.dart';
 
 class MMSListTile extends StatelessWidget {
   final String title;

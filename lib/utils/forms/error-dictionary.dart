@@ -1,4 +1,4 @@
-import 'package:restaurant_payments_ui/utils/forms/form.utils.dart';
+import 'package:mimos/utils/forms/form.utils.dart';
 
 const Map<MMSInputErrorCode, String> errorDictionary = {
   MMSInputErrorCode.empty: 'required',

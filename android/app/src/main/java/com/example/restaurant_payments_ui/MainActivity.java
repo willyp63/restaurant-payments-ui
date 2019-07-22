@@ -1,4 +1,4 @@
-package com.example.restaurant_payments_ui;
+package com.example.mimos;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

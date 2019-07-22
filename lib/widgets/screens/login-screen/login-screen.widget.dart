@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:restaurant_payments_ui/constants/app-routes.constants.dart';
-import 'package:restaurant_payments_ui/services/user.service.dart';
-import 'package:restaurant_payments_ui/utils/forms/index.dart';
-import 'package:restaurant_payments_ui/widgets/shared/index.dart';
-import 'package:restaurant_payments_ui/widgets/templates/index.dart';
+import 'package:mimos/constants/app-routes.constants.dart';
+import 'package:mimos/services/user.service.dart';
+import 'package:mimos/utils/forms/index.dart';
+import 'package:mimos/widgets/shared/index.dart';
+import 'package:mimos/widgets/templates/index.dart';
 
 class MMSLoginInputNames {
   static String email = 'email';

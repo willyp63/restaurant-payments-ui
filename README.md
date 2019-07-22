@@ -1,4 +1,4 @@
-# restaurant_payments_ui
+# mimos
 
 A new Flutter project.
 

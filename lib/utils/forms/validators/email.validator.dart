@@ -1,4 +1,4 @@
-import 'package:restaurant_payments_ui/utils/forms/form.utils.dart';
+import 'package:mimos/utils/forms/form.utils.dart';
 
 final emailExpression = new RegExp(r"(.*)@(.*)\.(.*)");
 

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:restaurant_payments_ui/constants/app-routes.constants.dart';
-import 'package:restaurant_payments_ui/services/index.dart';
-import 'package:restaurant_payments_ui/theme/colors.dart';
-import 'package:restaurant_payments_ui/widgets/shared/spinner.widget.dart';
+import 'package:mimos/constants/app-routes.constants.dart';
+import 'package:mimos/services/index.dart';
+import 'package:mimos/theme/colors.dart';
+import 'package:mimos/widgets/shared/spinner.widget.dart';
 
 class MMSAutoLoginScreen extends StatefulWidget {
   @override

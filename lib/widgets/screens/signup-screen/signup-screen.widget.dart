@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:restaurant_payments_ui/models/user.model.dart';
-import 'package:restaurant_payments_ui/services/index.dart';
-import 'package:restaurant_payments_ui/utils/forms/index.dart';
-import 'package:restaurant_payments_ui/widgets/shared/index.dart';
-import 'package:restaurant_payments_ui/constants/index.dart';
-import 'package:restaurant_payments_ui/widgets/templates/form-template.widget.dart';
+import 'package:mimos/models/user.model.dart';
+import 'package:mimos/services/index.dart';
+import 'package:mimos/utils/forms/index.dart';
+import 'package:mimos/widgets/shared/index.dart';
+import 'package:mimos/constants/index.dart';
+import 'package:mimos/widgets/templates/form-template.widget.dart';
 
 class MMSSignupInputNames {
   static String email = 'email';

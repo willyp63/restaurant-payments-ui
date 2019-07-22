@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:restaurant_payments_ui/theme/colors.dart';
-import 'package:restaurant_payments_ui/constants/index.dart';
-import 'package:restaurant_payments_ui/widgets/shared/app-bar.widget.dart';
+import 'package:mimos/theme/colors.dart';
+import 'package:mimos/constants/index.dart';
+import 'package:mimos/widgets/shared/app-bar.widget.dart';
 
 import './home/home.widget.dart';
 import './account/account.widget.dart';
