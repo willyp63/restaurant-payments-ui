@@ -12,6 +12,8 @@ import './widgets/screens/home-screen/account/account-personal/account-personal.
 import './widgets/screens/home-screen/account/account-payments/account-payments.widget.dart';
 import './widgets/screens/scan-code-screen/scan-code-screen.widget.dart';
 import './widgets/screens/table-screen/table-screen.widget.dart';
+import './widgets/screens/payment-confirmation-screen/payment-confirmation-screen.widget.dart';
+import './widgets/screens/payment-screen/payment-screen.widget.dart';
 
 void main() => runApp(MyApp());
 
@@ -32,6 +34,7 @@ class MyApp extends StatelessWidget {
         AppRoutes.accountPayments: (_) => MMSAccountPaymentsScreen(),
         AppRoutes.accountPersonal: (_) => MMSAccountPersonalScreen(),
         AppRoutes.scanCode: (_) => MMSScanCodeScreen(),
+        AppRoutes.paymentConfirmation: (_) => MMSPaymentConfirmationScreen(),
       },
       onGenerateRoute: _onGenerateRoute,
     );
@@ -43,6 +46,14 @@ class MyApp extends StatelessWidget {
       final MMSTableScreenArguments args = settings.arguments;
       return MaterialPageRoute(
         builder: (context) => MMSTableScreen(tableId: args.tableId),
+      );
+    }
+
+    // table route
+    if (settings.name == AppRoutes.payment) {
+      final MMSPaymentScreenArguments args = settings.arguments;
+      return MaterialPageRoute(
+        builder: (context) => MMSPaymentScreen(table: args.table, items: args.items),
       );
     }
   }

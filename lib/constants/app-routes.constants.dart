@@ -1,4 +1,6 @@
 class AppRoutes {
+  static const payment = '/payment';
+  static const paymentConfirmation = '/payment-confirmation';
   static const table = '/table';
   static const home = '/home';
   static const pastTables = '/past-tables';

@@ -8,12 +8,14 @@ class MMSTextField extends StatefulWidget {
   final ValueChanged<String> onChanged;
   final VoidCallback onBlur;
   final bool obscureText;
+  final TextInputType type;
 
   MMSTextField({
     this.label,
     this.errorText,
     this.onChanged,
     this.onBlur,
+    this.type = TextInputType.text,
     this.obscureText = false,
   });
 
@@ -48,6 +50,7 @@ class _MMSTextFieldState extends State<MMSTextField> {
   Widget build(context) {
     return TextField(
       focusNode: focusNode,
+      keyboardType: widget.type,
       decoration: InputDecoration(
         fillColor: MMSColors.white,
         filled: true,

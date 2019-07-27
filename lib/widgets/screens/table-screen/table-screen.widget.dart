@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mimos/utils/currency.utils.dart';
+import 'package:mimos/widgets/screens/payment-screen/payment-screen.widget.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'package:sticky_headers/sticky_headers.dart';
@@ -93,7 +94,7 @@ class _MMSTableScreenState extends State<MMSTableScreen> {
                 Expanded(
                   child: _buildTableIems(),
                 ),
-                _buildBottomDrawer(),
+                _buildBottomDrawer(table),
               ],
             ),
           );
@@ -211,13 +212,16 @@ class _MMSTableScreenState extends State<MMSTableScreen> {
         .toList();
   }
 
-  Widget _buildBottomDrawer() {
+  Widget _buildBottomDrawer(TableModel table) {
     final numItems = _selectedItems.length;
-    final selectedItemsSubtotal = _selectedItems.length != 0
-        ? _selectedItems
-            .map((item) => item.price)
-            .reduce((sum, itemPrice) => sum + itemPrice)
-        : 0;
+
+    if (numItems == 0) {
+      return Container();
+    }
+
+    final selectedItemsSubtotal = _selectedItems
+        .map((item) => item.price)
+        .reduce((sum, itemPrice) => sum + itemPrice);
 
     return Container(
       padding: EdgeInsets.all(16),
@@ -242,7 +246,10 @@ class _MMSTableScreenState extends State<MMSTableScreen> {
               ),
               Text(
                 formatCurrency(selectedItemsSubtotal),
-                style: Theme.of(context).textTheme.headline.merge(TextStyle(fontWeight: FontWeight.normal)),
+                style: Theme.of(context)
+                    .textTheme
+                    .headline
+                    .merge(TextStyle(fontWeight: FontWeight.normal)),
               ),
             ],
           ),
@@ -254,7 +261,7 @@ class _MMSTableScreenState extends State<MMSTableScreen> {
                 MMSButton(
                   text: 'Add items',
                   onPressed: () {
-                    // TODO
+                    _goToPaymentScreen(table);
                   },
                 ),
               ],
@@ -263,6 +270,12 @@ class _MMSTableScreenState extends State<MMSTableScreen> {
         ],
       ),
     );
+  }
+
+  _goToPaymentScreen(TableModel table) {
+    Navigator.of(context).pushNamed(AppRoutes.payment,
+        arguments: MMSPaymentScreenArguments(
+            table: table, items: _selectedItems.toList()));
   }
 
   _removePaidForItemsFromSelection() {
