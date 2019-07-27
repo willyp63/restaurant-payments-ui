@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:mimos/theme/colors.dart';
+import 'package:mimos/constants/image-paths.constants.dart';
+import 'package:mimos/constants/index.dart';
 import 'package:mimos/widgets/shared/index.dart';
 
 import './fullscreen-image-template.widget.dart';
@@ -39,7 +40,7 @@ class MMSFormTemplate extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.only(bottom: 24),
                     width: MediaQuery.of(context).size.width * 0.25,
-                    child: Image.asset('images/mimos_logo.png'),
+                    child: Image.asset(MMSImagePaths.logo),
                   ),
                 ],
                 children,

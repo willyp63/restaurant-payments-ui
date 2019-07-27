@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:mimos/constants/app-routes.constants.dart';
+import 'package:mimos/constants/index.dart';
 import 'package:mimos/services/index.dart';
-import 'package:mimos/theme/colors.dart';
 import 'package:mimos/widgets/shared/spinner.widget.dart';
 
 class MMSAutoLoginScreen extends StatefulWidget {

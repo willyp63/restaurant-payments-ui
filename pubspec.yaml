@@ -38,8 +38,8 @@ dev_dependencies:
   flutter_launcher_icons: ^0.7.2
   
 flutter_icons:
-  image_path_android: "images/launcher-icons/mimos-launcher-icon-android.png"
-  image_path_ios: "images/launcher-icons/mimos-launcher-icon-ios.png"
+  image_path_android: "assets/images/brand/launcher-icons/launcher-icon--android.png"
+  image_path_ios: "assets/images/brand/launcher-icons/launcher-icon--ios.png"
   android: true
   ios: true
 
@@ -60,17 +60,17 @@ flutter:
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
   assets:
-    - images/mimos_logo.png
-    - images/mimos_logo_white.png
-    - images/silverware.png
-    - images/restaurant.jpg
+    - assets/images/brand/logos/logo.png
+    - assets/images/brand/logos/logo--white.png
+    - assets/images/brand/misc/silverware.png
+    - assets/images/backgrounds/restaurant.jpg
 
   # see https://flutter.io/custom-fonts/#from-packages
   fonts:
     - family: Montserrat
       fonts:
-        - asset: fonts/Montserrat-Light.ttf
-        - asset: fonts/Montserrat-Regular.ttf
-        - asset: fonts/Montserrat-Medium.ttf
-        - asset: fonts/Montserrat-SemiBold.ttf
-        - asset: fonts/Montserrat-Bold.ttf
+        - asset: assets/fonts/montserrat/Montserrat-Light.ttf
+        - asset: assets/fonts/montserrat/Montserrat-Regular.ttf
+        - asset: assets/fonts/montserrat/Montserrat-Medium.ttf
+        - asset: assets/fonts/montserrat/Montserrat-SemiBold.ttf
+        - asset: assets/fonts/montserrat/Montserrat-Bold.ttf

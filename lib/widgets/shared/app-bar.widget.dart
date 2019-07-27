@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'package:mimos/constants/image-paths.constants.dart';
+
 class MMSAppBar extends AppBar {
   MMSAppBar({Widget title})
       : super(
@@ -10,7 +12,7 @@ class MMSAppBar extends AppBar {
               ? title
               : Container(
                   width: 100,
-                  child: Image.asset('images/mimos_logo_white.png'),
+                  child: Image.asset(MMSImagePaths.logoWhite),
                 ),
         );
 }

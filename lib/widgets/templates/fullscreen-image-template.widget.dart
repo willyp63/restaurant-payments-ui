@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:mimos/constants/image-paths.constants.dart';
+
 class MMSFullscreenImageTemplate extends StatelessWidget {
   final Widget child;
   final String imagePath;
 
-  MMSFullscreenImageTemplate({this.child, this.imagePath = 'images/restaurant.jpg'});
+  MMSFullscreenImageTemplate({this.child, this.imagePath = MMSImagePaths.restaurantBackground});
 
   @override
   Widget build(BuildContext context) {

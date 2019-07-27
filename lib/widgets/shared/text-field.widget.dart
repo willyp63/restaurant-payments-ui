@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:mimos/theme/colors.dart';
+import 'package:mimos/constants/colors.constants.dart';
 
 class MMSTextField extends StatefulWidget {
   final String label;

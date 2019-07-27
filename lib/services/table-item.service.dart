@@ -1,12 +1,14 @@
 import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:rxdart/rxdart.dart';
 
-import '../models/index.dart';
-import '../utils/index.dart';
-import '../constants/index.dart';
-import '../services/websocket.service.dart';
-import '../services/user.service.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:http/http.dart' as http;
+
+import 'package:mimos/models/index.dart';
+import 'package:mimos/utils/index.dart';
+import 'package:mimos/constants/index.dart';
+
+import 'package:mimos/services/websocket.service.dart';
+import 'package:mimos/services/user.service.dart';
 
 class TableItemService {
 

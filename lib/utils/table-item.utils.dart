@@ -1,7 +1,8 @@
 import 'package:intl/intl.dart';
 
+import 'package:mimos/models/index.dart';
+
 import './string.utils.dart';
-import '../models/index.dart';
 
 final currencyFormatter = NumberFormat.currency(symbol: '\$');
 final percentFormatter = NumberFormat.percentPattern();

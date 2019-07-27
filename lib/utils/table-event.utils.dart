@@ -1,6 +1,7 @@
+import 'package:mimos/models/index.dart';
+
 import './user.utils.dart';
 import './table-item.utils.dart';
-import '../models/index.dart';
 
 String formatTableEvent(TableEventModel event, UserModel activeUser) {
   switch (event.type) {

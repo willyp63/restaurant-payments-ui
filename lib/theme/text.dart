@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:mimos/theme/colors.dart';
+import 'package:mimos/constants/index.dart';
 
 final appTextTheme = TextTheme(
   display4: TextStyle(fontSize: 48.0, fontWeight: FontWeight.w500, color: MMSColors.black),

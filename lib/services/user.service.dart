@@ -1,13 +1,15 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../models/index.dart';
-import '../utils/index.dart';
-import '../constants/index.dart';
-import '../services/websocket.service.dart';
-import '../services/table-item.service.dart';
+import 'package:mimos/models/index.dart';
+import 'package:mimos/utils/index.dart';
+import 'package:mimos/constants/index.dart';
+
+import 'package:mimos/services/websocket.service.dart';
+import 'package:mimos/services/table-item.service.dart';
 
 class UserServiceCacheKeys {
   static String pastTable = 'past-tables';

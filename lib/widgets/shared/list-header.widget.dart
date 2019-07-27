@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mimos/theme/colors.dart';
 
+import 'package:mimos/constants/colors.constants.dart';
 import 'package:mimos/widgets/shared/index.dart';
 
 class MMSListHeader extends StatelessWidget {

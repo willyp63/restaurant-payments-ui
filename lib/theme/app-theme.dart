@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import './colors.dart';
+import 'package:mimos/constants/colors.constants.dart';
+
 import './text.dart';
 
 final appTheme = ThemeData(

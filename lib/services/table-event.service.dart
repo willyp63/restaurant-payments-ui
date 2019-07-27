@@ -1,8 +1,9 @@
 import 'package:rxdart/rxdart.dart';
 
-import '../services/user.service.dart';
-import '../services/table-item.service.dart';
-import '../models/index.dart';
+import 'package:mimos/models/index.dart';
+
+import 'package:mimos/services/user.service.dart';
+import 'package:mimos/services/table-item.service.dart';
 
 class TableEventService {
 

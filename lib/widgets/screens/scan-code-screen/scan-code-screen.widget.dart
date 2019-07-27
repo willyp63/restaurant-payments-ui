@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
 import 'package:fast_qr_reader_view/fast_qr_reader_view.dart';
 import 'package:mimos/constants/app-routes.constants.dart';
 
+import 'package:mimos/constants/colors.constants.dart';
 import 'package:mimos/services/index.dart';
 import 'package:mimos/utils/index.dart';
-import 'package:mimos/theme/colors.dart';
+
 import 'package:mimos/widgets/screens/table-screen/table-screen.widget.dart';
 
 class MMSScanCodeScreen extends StatefulWidget {
@@ -46,8 +48,28 @@ class _MMSScanCodeScreenState extends State<MMSScanCodeScreen>
                 child: _cameraPreviewWidget(context),
               ),
             ),
-            Center(
-              child: _boxWidget(),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  _boxWidget(),
+                  Container(
+                    width: MediaQuery.of(context).size.width / 2,
+                    margin: EdgeInsets.only(top: MediaQuery.of(context).size.height / 8),
+                    child: Text(
+                      'Scan the code on your receipt',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline
+                          .merge(TextStyle(color: MMSColors.white)),
+                    ),
+                  )
+                ],
+              ),
             ),
           ],
         ),
@@ -69,10 +91,8 @@ class _MMSScanCodeScreenState extends State<MMSScanCodeScreen>
               height: boxSize * boxCornerRatio,
               decoration: BoxDecoration(
                 border: Border(
-                  top: BorderSide(
-                      color: boxColor, width: boxBorderWidth),
-                  left: BorderSide(
-                      color: boxColor, width: boxBorderWidth),
+                  top: BorderSide(color: boxColor, width: boxBorderWidth),
+                  left: BorderSide(color: boxColor, width: boxBorderWidth),
                 ),
               ),
             ),
@@ -85,10 +105,8 @@ class _MMSScanCodeScreenState extends State<MMSScanCodeScreen>
               height: boxSize * boxCornerRatio,
               decoration: BoxDecoration(
                 border: Border(
-                  top: BorderSide(
-                      color: boxColor, width: boxBorderWidth),
-                  right: BorderSide(
-                      color: boxColor, width: boxBorderWidth),
+                  top: BorderSide(color: boxColor, width: boxBorderWidth),
+                  right: BorderSide(color: boxColor, width: boxBorderWidth),
                 ),
               ),
             ),
@@ -101,10 +119,8 @@ class _MMSScanCodeScreenState extends State<MMSScanCodeScreen>
               height: boxSize * boxCornerRatio,
               decoration: BoxDecoration(
                 border: Border(
-                  bottom: BorderSide(
-                      color: boxColor, width: boxBorderWidth),
-                  left: BorderSide(
-                      color: boxColor, width: boxBorderWidth),
+                  bottom: BorderSide(color: boxColor, width: boxBorderWidth),
+                  left: BorderSide(color: boxColor, width: boxBorderWidth),
                 ),
               ),
             ),
@@ -117,10 +133,8 @@ class _MMSScanCodeScreenState extends State<MMSScanCodeScreen>
               height: boxSize * boxCornerRatio,
               decoration: BoxDecoration(
                 border: Border(
-                  bottom: BorderSide(
-                      color: boxColor, width: boxBorderWidth),
-                  right: BorderSide(
-                      color: boxColor, width: boxBorderWidth),
+                  bottom: BorderSide(color: boxColor, width: boxBorderWidth),
+                  right: BorderSide(color: boxColor, width: boxBorderWidth),
                 ),
               ),
             ),
@@ -174,6 +188,7 @@ class _MMSScanCodeScreenState extends State<MMSScanCodeScreen>
 
     // TODO: test that user was added successfully before navigating
 
-    Navigator.of(context).pushReplacementNamed(AppRoutes.table, arguments: MMSTableScreenArguments(tableId: tableId));
+    Navigator.of(context).pushReplacementNamed(AppRoutes.table,
+        arguments: MMSTableScreenArguments(tableId: tableId));
   }
 }

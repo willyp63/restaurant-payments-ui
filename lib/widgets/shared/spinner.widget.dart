@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/colors.dart';
+import 'package:mimos/constants/colors.constants.dart';
 
 class MMSSpinner extends StatefulWidget {
   @override

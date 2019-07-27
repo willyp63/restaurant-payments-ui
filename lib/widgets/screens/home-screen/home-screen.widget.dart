@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:mimos/theme/colors.dart';
 import 'package:mimos/constants/index.dart';
 import 'package:mimos/widgets/shared/app-bar.widget.dart';
 

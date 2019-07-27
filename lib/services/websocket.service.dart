@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'dart:async';
-import 'package:web_socket_channel/io.dart';
-import 'package:rxdart/rxdart.dart';
 
-import '../models/index.dart';
-import '../constants/index.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:web_socket_channel/io.dart';
+
+import 'package:mimos/models/index.dart';
+import 'package:mimos/constants/index.dart';
 
 class WebSocketService {
 

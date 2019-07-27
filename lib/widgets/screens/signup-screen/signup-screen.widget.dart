@@ -5,7 +5,7 @@ import 'package:mimos/services/index.dart';
 import 'package:mimos/utils/forms/index.dart';
 import 'package:mimos/widgets/shared/index.dart';
 import 'package:mimos/constants/index.dart';
-import 'package:mimos/widgets/templates/form-template.widget.dart';
+import 'package:mimos/widgets/templates/index.dart';
 
 class MMSSignupInputNames {
   static String email = 'email';

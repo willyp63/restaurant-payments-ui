@@ -1,3 +1,3 @@
 class LocalStorage {
-  static String userId = 'userId';
+  static const userId = 'userId';
 }

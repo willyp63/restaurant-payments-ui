@@ -1,9 +1,10 @@
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 
-import '../models/index.dart';
-import '../utils/index.dart';
-import '../constants/index.dart';
+import 'package:mimos/models/index.dart';
+import 'package:mimos/utils/index.dart';
+import 'package:mimos/constants/index.dart';
 
 class TableService {
 

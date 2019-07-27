@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import 'package:mimos/constants/app-routes.constants.dart';
-import 'package:mimos/models/table.model.dart';
+import 'package:mimos/constants/index.dart';
+import 'package:mimos/models/index.dart';
 import 'package:mimos/services/index.dart';
-import 'package:mimos/theme/colors.dart';
-import 'package:mimos/utils/date.utils.dart';
-import 'package:mimos/widgets/screens/table-screen/table-screen.widget.dart';
-import 'package:mimos/widgets/shared/divider.widget.dart';
+import 'package:mimos/utils/index.dart';
 import 'package:mimos/widgets/shared/index.dart';
+
+import 'package:mimos/widgets/screens/table-screen/table-screen.widget.dart';
 
 class MMSHome extends StatefulWidget {
   final void Function() onRecentTablesPressed;

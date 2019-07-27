@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../../theme/colors.dart';
-import '../../shared/button.widget.dart';
-import '../../../constants/app-routes.constants.dart';
+import 'package:mimos/constants/index.dart';
+import 'package:mimos/widgets/shared/index.dart';
 
 class MMSWelcomeScreen extends StatelessWidget {
   @override
@@ -19,7 +18,7 @@ class MMSWelcomeScreen extends StatelessWidget {
                 top: 0.0,
                 child: Container(
                   height: MediaQuery.of(context).size.height * 0.55,
-                  child: Image.asset('images/silverware.png'),
+                  child: Image.asset(MMSImagePaths.silverwareGraphic),
                 ),
               ),
               Positioned(
@@ -35,7 +34,7 @@ class MMSWelcomeScreen extends StatelessWidget {
                       children: <Widget>[
                         Container(
                           width: MediaQuery.of(context).size.width * 0.6,
-                          child: Image.asset('images/mimos_logo.png'),
+                          child: Image.asset(MMSImagePaths.logo),
                         ),
                         Container(
                           width: MediaQuery.of(context).size.width * 0.6,
