@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mimos/utils/currency.utils.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'package:sticky_headers/sticky_headers.dart';
@@ -29,16 +31,12 @@ class MMSTableScreen extends StatefulWidget {
 class _MMSTableScreenState extends State<MMSTableScreen> {
   Future<TableModel> _table;
   Observable<List<TableItemModel>> _tableItems;
-  Observable<int> _numUnseenEvents;
   StreamSubscription _websocketSubscription;
   StreamSubscription _tableItemsSubscription;
   StreamSubscription _itemPaySubscription;
 
-  bool _isLoading = false;
-
   final Set<TableItemModel> _selectedItems = Set<TableItemModel>();
   final Set<String> _selectedItemIds = Set<String>();
-  num _tipPercent = .2;
 
   @override
   void initState() {
@@ -56,6 +54,21 @@ class _MMSTableScreenState extends State<MMSTableScreen> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+
+    if (_websocketSubscription != null) {
+      _websocketSubscription.cancel();
+    }
+    if (_tableItemsSubscription != null) {
+      _tableItemsSubscription.cancel();
+    }
+    if (_itemPaySubscription != null) {
+      _itemPaySubscription.cancel();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: _table,
@@ -68,10 +81,21 @@ class _MMSTableScreenState extends State<MMSTableScreen> {
             appBar: MMSAppBar(
               title: Text(
                 table.name,
-                style: Theme.of(context).textTheme.display1.merge(TextStyle(color: MMSColors.white)),
+                style: Theme.of(context)
+                    .textTheme
+                    .display1
+                    .merge(TextStyle(color: MMSColors.white)),
               ),
             ),
-            body: _buildTableIems(),
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Expanded(
+                  child: _buildTableIems(),
+                ),
+                _buildBottomDrawer(),
+              ],
+            ),
           );
         } else if (snapshot.hasError) {
           throw snapshot.error;
@@ -88,48 +112,49 @@ class _MMSTableScreenState extends State<MMSTableScreen> {
 
   Widget _buildTableIems() {
     return StreamBuilder(
-        stream: _tableItems,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            List<TableItemModel> tableItems = snapshot.data;
-            List<TableItemModel> paidForTableItems =
-                tableItems.where((item) => item.paidForAt != null).toList();
-            List<TableItemModel> unpaidTableItems =
-                tableItems.where((item) => item.paidForAt == null).toList();
+      stream: _tableItems,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          List<TableItemModel> tableItems = snapshot.data;
+          List<TableItemModel> paidForTableItems =
+              tableItems.where((item) => item.paidForAt != null).toList();
+          List<TableItemModel> unpaidTableItems =
+              tableItems.where((item) => item.paidForAt == null).toList();
 
-            return ListView(
-              children: <Widget>[
-                StickyHeader(
-                  header: Column(
-                    children: <Widget>[
-                      MMSListHeader(title: 'Unpaid'),
-                      MMSDivider(),
-                    ],
-                  ),
-                  content: Column(
-                    children: _buildTableItemList(unpaidTableItems, false),
-                  ),
+          return ListView(
+            shrinkWrap: true,
+            children: <Widget>[
+              StickyHeader(
+                header: Column(
+                  children: <Widget>[
+                    MMSListHeader(title: 'Unpaid'),
+                    MMSDivider(),
+                  ],
                 ),
-                StickyHeader(
-                  header: Column(
-                    children: <Widget>[
-                      MMSListHeader(title: 'Paid'),
-                      MMSDivider(),
-                    ],
-                  ),
-                  content: Column(
-                    children: _buildTableItemList(paidForTableItems, true),
-                  ),
+                content: Column(
+                  children: _buildTableItemList(unpaidTableItems, false),
                 ),
-              ],
-            );
-          } else if (snapshot.hasError) {
-            throw snapshot.error;
-          }
+              ),
+              StickyHeader(
+                header: Column(
+                  children: <Widget>[
+                    MMSListHeader(title: 'Paid'),
+                    MMSDivider(),
+                  ],
+                ),
+                content: Column(
+                  children: _buildTableItemList(paidForTableItems, true),
+                ),
+              ),
+            ],
+          );
+        } else if (snapshot.hasError) {
+          throw snapshot.error;
+        }
 
-          return Center(child: MMSSpinner());
-        },
-      );
+        return Center(child: MMSSpinner());
+      },
+    );
   }
 
   List<Widget> _buildTableItemList(
@@ -142,23 +167,26 @@ class _MMSTableScreenState extends State<MMSTableScreen> {
             MMSListTile(
               title: formatTableItemName(item),
               subtitle: isPaidFor
-                  ? formatTableItemPrice(item) +
+                  ? formatCurrency(item.price) +
                       '\nPaid by ' +
                       formatUser(item.paidForBy, UserService.getActiveUser())
-                  : formatTableItemPrice(item),
+                  : formatCurrency(item.price),
               trailing: isPaidFor
                   ? null
                   : isItemSelected
-                    ? Icon(Icons.check_box, color: MMSColors.violet, size: 32)
-                    : Container(
-                      margin: EdgeInsets.only(right: 4),
-                      width: 24,
-                      height: 24,
-                      decoration: BoxDecoration(
-                        border: Border.all(style: BorderStyle.solid, color: MMSColors.violet, width: 1),
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                    ),
+                      ? Icon(Icons.check_box, color: MMSColors.violet, size: 32)
+                      : Container(
+                          margin: EdgeInsets.only(right: 4),
+                          width: 24,
+                          height: 24,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                                style: BorderStyle.solid,
+                                color: MMSColors.violet,
+                                width: 1),
+                            borderRadius: BorderRadius.circular(2),
+                          ),
+                        ),
               onTap: () {
                 if (isPaidFor) {
                   return;
@@ -181,6 +209,60 @@ class _MMSTableScreenState extends State<MMSTableScreen> {
         })
         .expand((x) => x)
         .toList();
+  }
+
+  Widget _buildBottomDrawer() {
+    final numItems = _selectedItems.length;
+    final selectedItemsSubtotal = _selectedItems.length != 0
+        ? _selectedItems
+            .map((item) => item.price)
+            .reduce((sum, itemPrice) => sum + itemPrice)
+        : 0;
+
+    return Container(
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: MMSColors.white,
+        boxShadow: [
+          new BoxShadow(
+            color: const Color(0x66000000),
+            offset: new Offset(0.0, 0.0),
+            blurRadius: 8.0,
+          )
+        ],
+      ),
+      child: Column(
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                'Your items ($numItems):',
+                style: Theme.of(context).textTheme.headline,
+              ),
+              Text(
+                formatCurrency(selectedItemsSubtotal),
+                style: Theme.of(context).textTheme.headline.merge(TextStyle(fontWeight: FontWeight.normal)),
+              ),
+            ],
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                MMSButton(
+                  text: 'Add items',
+                  onPressed: () {
+                    // TODO
+                  },
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
   }
 
   _removePaidForItemsFromSelection() {
