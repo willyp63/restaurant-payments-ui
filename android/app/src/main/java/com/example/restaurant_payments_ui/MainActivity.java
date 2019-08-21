@@ -1,4 +1,4 @@
-package com.example.mimos;
+package wwj.mimos;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
